@@ -1,0 +1,5 @@
+name: BetterChair
+version: 1.0
+author: Kurfat
+main: de.Kurfat.Java.Minecraft.BetterChair.Plugin
+api-version: 1.14
