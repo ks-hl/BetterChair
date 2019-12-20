@@ -1,4 +1,4 @@
-package de.Kurfat.Java.Minecraft.BetterChair.Settings;
+package de.Kurfat.Java.Minecraft.BetterChair.Types;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -16,7 +16,7 @@ import org.spigotmc.event.entity.EntityMountEvent;
 
 import de.Kurfat.Java.Minecraft.BetterChair.PlayerSitEvent;
 
-public interface Settings extends Listener{
+public interface IChair extends Listener{
 
 	// DEFAULT CHAIR METHODES
 	public Player getPlayer();

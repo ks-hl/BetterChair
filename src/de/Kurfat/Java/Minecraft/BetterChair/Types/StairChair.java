@@ -1,4 +1,4 @@
-package de.Kurfat.Java.Minecraft.BetterChair.Settings;
+package de.Kurfat.Java.Minecraft.BetterChair.Types;
 
 import org.bukkit.Location;
 import org.bukkit.block.Block;
@@ -8,19 +8,19 @@ import org.bukkit.block.data.type.Stairs;
 import org.bukkit.block.data.type.Stairs.Shape;
 import org.bukkit.entity.Player;
 
-import de.Kurfat.Java.Minecraft.BetterChair.SettingsParseExeotion;
+import de.Kurfat.Java.Minecraft.BetterChair.TypeParseException;
 
 public class StairChair extends Chair{
 
 	private Stairs stairs;
 	
-	public StairChair(Player player, Block block) throws SettingsParseExeotion {
+	public StairChair(Player player, Block block) throws TypeParseException {
 		super(player, block);
 		this.savepoint = player.getLocation().clone();
-		if(block.getBlockData() instanceof Stairs == false) throw new SettingsParseExeotion("This is not stairs: " + block.toString());
+		if(block.getBlockData() instanceof Stairs == false) throw new TypeParseException("This is not stairs: " + block.toString());
 		this.stairs = (Stairs) block.getBlockData();
-		if(stairs.getHalf() != Half.BOTTOM) throw new SettingsParseExeotion("Stairs half is not bottom: " + block.toString());
-		if(stairs.getShape() != Shape.STRAIGHT) throw new SettingsParseExeotion("Stairs shape is not straight: " + block.toString());
+		if(stairs.getHalf() != Half.BOTTOM) throw new TypeParseException("Stairs half is not bottom: " + block.toString());
+		if(stairs.getShape() != Shape.STRAIGHT) throw new TypeParseException("Stairs shape is not straight: " + block.toString());
 		double x = block.getX() + 0.5;
 		double y = block.getY() - 1.15;
 		double z = block.getZ() + 0.5;
@@ -43,7 +43,7 @@ public class StairChair extends Chair{
 			z -= face;
 			yaw = 180F;
 		}
-		else throw new SettingsParseExeotion("Stairs facing not include: " + block.toString());
+		else throw new TypeParseException("Stairs facing not include: " + block.toString());
 		this.location = new Location(block.getWorld(), x, y, z, yaw, pitch);
 	}
 	

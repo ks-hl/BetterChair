@@ -1,4 +1,4 @@
-package de.Kurfat.Java.Minecraft.BetterChair.Settings;
+package de.Kurfat.Java.Minecraft.BetterChair.Types;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -9,7 +9,8 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 
 import de.Kurfat.Java.Minecraft.BetterChair.EntityPassengerRotate.EntityPassengerRotateEvent;
-import de.Kurfat.Java.Minecraft.BetterChair.SettingsParseExeotion;
+import de.Kurfat.Java.Minecraft.BetterChair.TypeParseException;
+import de.Kurfat.Java.Minecraft.BetterChair.SpigotVersion;
 
 public class BlockChair extends Chair{
 
@@ -261,13 +262,14 @@ public class BlockChair extends Chair{
 		return materials;
 	}
 	
-	public BlockChair(Player player, Block block) throws SettingsParseExeotion {
+	public BlockChair(Player player, Block block) throws TypeParseException {
 		super(player, block, block.getLocation().clone().add(0.5, -0.7, 0.5));
-		if(ALLOWED_TYPES.contains(block.getType()) == false) throw new SettingsParseExeotion("This type is not allowed: " + block.toString());
+		if(ALLOWED_TYPES.contains(block.getType()) == false) throw new TypeParseException("This type is not allowed: " + block.toString());
 	}
 	
 	@EventHandler
 	public void onEntityPassengerRotate(EntityPassengerRotateEvent event) {
+		if(event.getEntity().equals(player) == false) return;
 		changeYawField(armorStand, event.getNewLocation().getYaw());
 	}
 

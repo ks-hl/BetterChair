@@ -1,4 +1,4 @@
-package de.Kurfat.Java.Minecraft.BetterChair.Settings;
+package de.Kurfat.Java.Minecraft.BetterChair.Types;
 
 import java.util.HashMap;
 
@@ -13,7 +13,7 @@ import org.bukkit.util.Consumer;
 
 import de.Kurfat.Java.Minecraft.BetterChair.BetterChair;
 
-public class Chair implements Settings{
+public class Chair implements IChair{
 	
 	public static final HashMap<Player, Chair> CACHE_BY_PLAYER = new HashMap<Player, Chair>();
 	public static final HashMap<Block, Chair> CACHE_BY_BLOCK = new HashMap<Block, Chair>();

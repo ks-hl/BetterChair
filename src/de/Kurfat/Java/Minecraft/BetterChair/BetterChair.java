@@ -12,13 +12,13 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import de.Kurfat.Java.Minecraft.BetterChair.Settings.BedChair;
-import de.Kurfat.Java.Minecraft.BetterChair.Settings.BlockChair;
-import de.Kurfat.Java.Minecraft.BetterChair.Settings.CarpetChair;
-import de.Kurfat.Java.Minecraft.BetterChair.Settings.Chair;
-import de.Kurfat.Java.Minecraft.BetterChair.Settings.SlapChair;
-import de.Kurfat.Java.Minecraft.BetterChair.Settings.SnowChair;
-import de.Kurfat.Java.Minecraft.BetterChair.Settings.StairChair;
+import de.Kurfat.Java.Minecraft.BetterChair.Types.BedChair;
+import de.Kurfat.Java.Minecraft.BetterChair.Types.BlockChair;
+import de.Kurfat.Java.Minecraft.BetterChair.Types.CarpetChair;
+import de.Kurfat.Java.Minecraft.BetterChair.Types.Chair;
+import de.Kurfat.Java.Minecraft.BetterChair.Types.SlapChair;
+import de.Kurfat.Java.Minecraft.BetterChair.Types.SnowChair;
+import de.Kurfat.Java.Minecraft.BetterChair.Types.StairChair;
 
 public class BetterChair extends JavaPlugin implements Listener{
 
@@ -54,32 +54,32 @@ public class BetterChair extends JavaPlugin implements Listener{
 			Chair chair = new StairChair(player, block);
 			chair.spawn();
 			return;
-		} catch (SettingsParseExeotion e) {}
+		} catch (TypeParseException e) {}
 		try {
 			Chair chair = new SlapChair(player, block);
 			chair.spawn();
 			return;
-		} catch (SettingsParseExeotion e) {}
+		} catch (TypeParseException e) {}
 		try {
 			Chair chair = new BedChair(player, block);
 			chair.spawn();
 			return;
-		} catch (SettingsParseExeotion e) {}
+		} catch (TypeParseException e) {}
 		try {
 			Chair chair = new SnowChair(player, block);
 			chair.spawn();
 			return;
-		} catch (SettingsParseExeotion e) {}
+		} catch (TypeParseException e) {}
 		try {
 			Chair chair = new CarpetChair(player, block);
 			chair.spawn();
 			return;
-		} catch (SettingsParseExeotion e) {}
+		} catch (TypeParseException e) {}
 		try {
 			Chair chair = new BlockChair(player, block);
 			chair.spawn();
 			return;
-		} catch (SettingsParseExeotion e) {}
+		} catch (TypeParseException e) {}
 	}
 	
 }

@@ -1,4 +1,4 @@
-package de.Kurfat.Java.Minecraft.BetterChair.Settings;
+package de.Kurfat.Java.Minecraft.BetterChair;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,7 +13,11 @@ public enum SpigotVersion {
 
 	public static SpigotVersion currentVersion() {
 		String version = Bukkit.getVersion();
-		if(version.endsWith("(MC: 1.15)")) return VERSION_1_15;
+		if(version.endsWith("(MC: 1.15)") 
+				|| version.endsWith("(MC: 1.15.1)") 
+				|| version.endsWith("(MC: 1.15.2)") 
+				|| version.endsWith("(MC: 1.15.3)") 
+				|| version.endsWith("(MC: 1.15.4)")) return VERSION_1_15;
 		if(version.endsWith("(MC: 1.14)") 
 				|| version.endsWith("(MC: 1.14.1)") 
 				|| version.endsWith("(MC: 1.14.2)") 
