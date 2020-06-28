@@ -10,17 +10,17 @@ public class PlayerSitEvent extends PlayerEvent{
 	
 	public static HandlerList HANDLERS = new HandlerList();
 	
-	private IChair settings;
+	private IChair chair;
 	private boolean enable;
 	
-	public PlayerSitEvent(Player player, IChair settings, boolean enable) {
+	public PlayerSitEvent(Player player, IChair chair, boolean enable) {
 		super(player);
-		this.settings = settings;
+		this.chair = chair;
 		this.enable = enable;
 	}
 
-	public IChair getSettings() {
-		return settings;
+	public IChair getChair() {
+		return chair;
 	}
 	public boolean isEnable() {
 		return enable;

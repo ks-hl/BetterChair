@@ -8,6 +8,7 @@ import org.bukkit.event.EventHandler;
 
 import de.Kurfat.Java.Minecraft.BetterChair.EntityPassengerRotate.EntityPassengerRotateEvent;
 import de.Kurfat.Java.Minecraft.BetterChair.TypeParseException;
+import de.Kurfat.Java.Minecraft.BetterChair.BetterChair.ChairType;
 
 public class SlapChair extends Chair{
 
@@ -19,6 +20,11 @@ public class SlapChair extends Chair{
 		this.slab = (Slab) block.getBlockData();
 		if(slab.getType() == Type.BOTTOM) location = block.getLocation().clone().add(0.5, -1.20, 0.5);
 		else location = block.getLocation().clone().add(0.5, -0.7, 0.5);
+	}
+	
+	@Override
+	public ChairType getType() {
+		return ChairType.SLAP;
 	}
 	
 	public Slab getSlab() {

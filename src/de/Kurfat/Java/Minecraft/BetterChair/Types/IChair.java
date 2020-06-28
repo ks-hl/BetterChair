@@ -14,6 +14,7 @@ import org.bukkit.event.player.PlayerTeleportEvent;
 import org.spigotmc.event.entity.EntityDismountEvent;
 import org.spigotmc.event.entity.EntityMountEvent;
 
+import de.Kurfat.Java.Minecraft.BetterChair.BetterChair.ChairType;
 import de.Kurfat.Java.Minecraft.BetterChair.PlayerSitEvent;
 
 public interface IChair extends Listener{
@@ -26,6 +27,7 @@ public interface IChair extends Listener{
 	public void spawn();
 	public void eject();
 	public void remove();
+	public ChairType getType();
 	
 	// REMOVE PASSENGERS FROM ARMOR_STAND
 	@EventHandler

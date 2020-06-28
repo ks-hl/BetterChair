@@ -10,6 +10,7 @@ import org.bukkit.event.EventHandler;
 
 import de.Kurfat.Java.Minecraft.BetterChair.EntityPassengerRotate.EntityPassengerRotateEvent;
 import de.Kurfat.Java.Minecraft.BetterChair.TypeParseException;
+import de.Kurfat.Java.Minecraft.BetterChair.BetterChair.ChairType;
 import de.Kurfat.Java.Minecraft.BetterChair.SpigotVersion;
 
 public class BlockChair extends Chair{
@@ -300,6 +301,10 @@ public class BlockChair extends Chair{
 	public BlockChair(Player player, Block block) throws TypeParseException {
 		super(player, block, block.getLocation().clone().add(0.5, -0.7, 0.5));
 		if(ALLOWED_TYPES.contains(block.getType()) == false) throw new TypeParseException("This type is not allowed: " + block.toString());
+	}
+	@Override
+	public ChairType getType() {
+		return ChairType.BLOCK;
 	}
 	
 	@EventHandler

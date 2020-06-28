@@ -6,12 +6,9 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
-import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-
-import javax.net.ssl.HttpsURLConnection;
 
 import org.bukkit.Bukkit;
 import org.bukkit.block.Block;
@@ -33,6 +30,7 @@ import de.Kurfat.Java.Minecraft.BetterChair.Types.BedChair;
 import de.Kurfat.Java.Minecraft.BetterChair.Types.BlockChair;
 import de.Kurfat.Java.Minecraft.BetterChair.Types.CarpetChair;
 import de.Kurfat.Java.Minecraft.BetterChair.Types.Chair;
+import de.Kurfat.Java.Minecraft.BetterChair.Types.IChair;
 import de.Kurfat.Java.Minecraft.BetterChair.Types.SlapChair;
 import de.Kurfat.Java.Minecraft.BetterChair.Types.SnowChair;
 import de.Kurfat.Java.Minecraft.BetterChair.Types.StairChair;
@@ -42,9 +40,22 @@ public class BetterChair extends JavaPlugin implements Listener{
 	public static BetterChair INSTANCE;
 	private static Gson GSON = new GsonBuilder().setPrettyPrinting().create();
 	private static File FILE;
-	private static HashMap<SitType, Boolean> SETTINGS = new HashMap<SitType, Boolean>();;
+	private static HashMap<ChairType, Boolean> SETTINGS = new HashMap<ChairType, Boolean>();
+	private static WorldGuardAddon WORLDGUARD;
 	
 	public BetterChair() {}
+	
+	public IChair getChair(Player player, Block block) {
+		if(SETTINGS.get(ChairType.STAIR)) try { return new StairChair(player, block); } catch (TypeParseException e) {}
+		if(SETTINGS.get(ChairType.SLAP)) try { return new SlapChair(player, block); } catch (TypeParseException e) {}
+		if(SETTINGS.get(ChairType.BED)) try { return new BedChair(player, block); } catch (TypeParseException e) {}
+		if(SETTINGS.get(ChairType.SNOW)) try { return new SnowChair(player, block); } catch (TypeParseException e) {}
+		if(SETTINGS.get(ChairType.CARPET)) try { return new CarpetChair(player, block); } catch (TypeParseException e) {}
+		if(SETTINGS.get(ChairType.BLOCK)) try { return new BlockChair(player, block); } catch (TypeParseException e) {}
+		if(SETTINGS.get(ChairType.STAIR)) try { return new StairChair(player, block); } catch (TypeParseException e) {}
+		if(SETTINGS.get(ChairType.STAIR)) try { return new StairChair(player, block); } catch (TypeParseException e) {}
+		return null;
+	}
 	
 	@Override
 	public void onEnable() {
@@ -77,13 +88,14 @@ public class BetterChair extends JavaPlugin implements Listener{
 			}
 		});
 		
+		if(Bukkit.getPluginManager().getPlugin("WorldGuard") != null) WORLDGUARD = new WorldGuardAddon();
 		
 		FILE = new File(getDataFolder().getAbsolutePath() +  "/settings.json");
 		try {
-			SETTINGS = GSON.fromJson(new FileReader(FILE), new TypeToken<HashMap<SitType, Boolean>>(){}.getType());
+			SETTINGS = GSON.fromJson(new FileReader(FILE), new TypeToken<HashMap<ChairType, Boolean>>(){}.getType());
 		} catch (Exception e) {
-			SETTINGS = new HashMap<SitType, Boolean>();
-			for(SitType type : SitType.values()) SETTINGS.put(type, true);
+			SETTINGS = new HashMap<ChairType, Boolean>();
+			for(ChairType type : ChairType.values()) SETTINGS.put(type, true);
 			try {
 				save();
 			} catch (IOException e1) {
@@ -140,56 +152,13 @@ public class BetterChair extends JavaPlugin implements Listener{
 				|| Chair.CACHE_BY_PLAYER.containsKey(player)
 				|| block.getRelative(BlockFace.UP).isPassable() == false) return;
 		
-		if(SETTINGS.get(SitType.STAIR)) {
-			try {
-				Chair chair = new StairChair(player, block);
-				chair.spawn();
-				return;
-			} catch (TypeParseException e) {}
-		}
-		
-		if(SETTINGS.get(SitType.SLAP)) {
-			try {
-				Chair chair = new SlapChair(player, block);
-				chair.spawn();
-				return;
-			} catch (TypeParseException e) {}
-		}
-		
-		if(SETTINGS.get(SitType.BED)) {
-			try {
-				Chair chair = new BedChair(player, block);
-				chair.spawn();
-				return;
-			} catch (TypeParseException e) {}
-		}
-		
-		if(SETTINGS.get(SitType.SNOW)) {
-			try {
-				Chair chair = new SnowChair(player, block);
-				chair.spawn();
-				return;
-			} catch (TypeParseException e) {}
-		}
-		
-		if(SETTINGS.get(SitType.CARPET)) {
-			try {
-				Chair chair = new CarpetChair(player, block);
-				chair.spawn();
-				return;
-			} catch (TypeParseException e) {}
-		}
-		
-		if(SETTINGS.get(SitType.BLOCK)) {
-			try {
-				Chair chair = new BlockChair(player, block);
-				chair.spawn();
-				return;
-			} catch (TypeParseException e) {}
-		}
+		IChair chair = getChair(player, block);
+		if(chair == null) return;
+		if(WORLDGUARD != null && WORLDGUARD.check(player, chair) == false) return;
+		chair.spawn();
 	}
 	
-	public static enum SitType {
+	public static enum ChairType {
 		STAIR, SLAP, BED, SNOW, CARPET, BLOCK;
 	}
 }

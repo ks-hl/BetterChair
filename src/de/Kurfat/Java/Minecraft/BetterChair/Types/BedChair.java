@@ -10,6 +10,7 @@ import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPhysicsEvent;
 
 import de.Kurfat.Java.Minecraft.BetterChair.TypeParseException;
+import de.Kurfat.Java.Minecraft.BetterChair.BetterChair.ChairType;
 import de.Kurfat.Java.Minecraft.BetterChair.EntityPassengerRotate.EntityPassengerRotateEvent;
 
 public class BedChair extends Chair{
@@ -56,6 +57,11 @@ public class BedChair extends Chair{
 	public Location getLocation() {
 		return location;
 	}
+	@Override
+	public ChairType getType() {
+		return ChairType.BED;
+	}
+	
 	public Part getPart() {
 		return part;
 	}
@@ -88,4 +94,5 @@ public class BedChair extends Chair{
 		if(event.getEntity().equals(player) == false) return;
 		changeYawField(armorStand, event.getNewLocation().getYaw());
 	}
+	
 }
