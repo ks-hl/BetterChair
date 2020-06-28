@@ -28,15 +28,15 @@ public class WorldGuardAddon {
 		worldGuard = WorldGuard.getInstance();
 		plugin = WorldGuardPlugin.inst();
 		FlagRegistry register = WorldGuard.getInstance().getFlagRegistry();
-		try {
-			for(ChairType type : ChairType.values()) {
-				StateFlag flag = new StateFlag("chair-" + type.name().toLowerCase(), true, RegionGroup.ALL);
-				flags.put(type, flag);
-				register.register(flag);
-			}
-		} catch (IllegalStateException e) {
-			System.out.println("[BetterChair] WorldGuard may only start after BetterChair!");
+		for(ChairType type : ChairType.values()) {
+			StateFlag flag = new StateFlag("chair-" + type.name().toLowerCase(), true, RegionGroup.ALL);
+			flags.put(type, flag);
+			register.register(flag);
 		}
+	}
+	
+	public HashMap<ChairType, StateFlag> getFlags() {
+		return flags;
 	}
 	
 	public boolean check(Player player, IChair chair) {

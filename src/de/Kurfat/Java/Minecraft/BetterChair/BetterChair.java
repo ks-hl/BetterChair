@@ -60,6 +60,11 @@ public class BetterChair extends JavaPlugin implements Listener{
 	}
 	
 	@Override
+	public void onLoad() {
+		if(Bukkit.getPluginManager().getPlugin("WorldGuard") != null) WORLDGUARD = new WorldGuardAddon();
+	}
+	
+	@Override
 	public void onEnable() {
 		INSTANCE = this;
 		Bukkit.getScheduler().runTaskAsynchronously(this, new Runnable() {
@@ -85,8 +90,6 @@ public class BetterChair extends JavaPlugin implements Listener{
 				}
 			}
 		});
-		
-		if(Bukkit.getPluginManager().getPlugin("WorldGuard") != null) WORLDGUARD = new WorldGuardAddon();
 		
 		FILE = new File(getDataFolder().getAbsolutePath() +  "/settings.json");
 		try {
