@@ -35,10 +35,6 @@ public class WorldGuardAddon {
 		}
 	}
 	
-	public HashMap<ChairType, StateFlag> getFlags() {
-		return flags;
-	}
-	
 	public boolean check(Player player, IChair chair) {
 		for(RegionManager manager : worldGuard.getPlatform().getRegionContainer().getLoaded()) if(manager.getName().equals(player.getWorld().getName())){
 			ApplicableRegionSet regions = manager.getApplicableRegions(BlockVector3.at(player.getLocation().getX(), player.getLocation().getY(), player.getLocation().getZ()));

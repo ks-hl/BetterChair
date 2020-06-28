@@ -43,7 +43,7 @@ public class BetterChair extends JavaPlugin implements Listener{
 	private static Gson GSON = new GsonBuilder().setPrettyPrinting().create();
 	private static File FILE;
 	private static HashMap<ChairType, Boolean> SETTINGS = new HashMap<ChairType, Boolean>();
-	private static WorldGuardAddon WORLDGUARD;
+	private static WorldGuardAddon WORLDGUARDADDON;
 	
 	public BetterChair() {}
 	
@@ -61,7 +61,7 @@ public class BetterChair extends JavaPlugin implements Listener{
 	
 	@Override
 	public void onLoad() {
-		if(Bukkit.getPluginManager().getPlugin("WorldGuard") != null) WORLDGUARD = new WorldGuardAddon();
+		if(Bukkit.getPluginManager().getPlugin("WorldGuard") != null) WORLDGUARDADDON = new WorldGuardAddon();
 	}
 	
 	@Override
@@ -154,7 +154,7 @@ public class BetterChair extends JavaPlugin implements Listener{
 		PlayerChairCreateEvent customEvent = new PlayerChairCreateEvent(player, chair);
 		Bukkit.getPluginManager().callEvent(customEvent);
 		if(customEvent.isCancelled()) return;
-		if(WORLDGUARD != null && WORLDGUARD.check(player, chair) == false) return;
+		if(WORLDGUARDADDON != null && WORLDGUARDADDON.check(player, chair) == false) return;
 		chair.spawn();
 		Bukkit.getPluginManager().callEvent(new PlayerChairSwitchEvent(player, chair, true));
 	}

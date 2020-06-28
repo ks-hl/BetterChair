@@ -1,7 +1,6 @@
 name: BetterChair
-version: 1.6.3
+version: 1.6.4
 author: Kurfat
 main: de.Kurfat.Java.Minecraft.BetterChair.BetterChair
 api-version: 1.16
-loadbefore: [WorldGuard]
 softdepend: [WorldGuard]
