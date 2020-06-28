@@ -12,10 +12,9 @@ import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.player.PlayerTeleportEvent;
 import org.spigotmc.event.entity.EntityDismountEvent;
-import org.spigotmc.event.entity.EntityMountEvent;
 
 import de.Kurfat.Java.Minecraft.BetterChair.BetterChair.ChairType;
-import de.Kurfat.Java.Minecraft.BetterChair.PlayerSitEvent;
+import de.Kurfat.Java.Minecraft.BetterChair.Events.PlayerChairSwitchEvent;
 
 public interface IChair extends Listener{
 
@@ -51,14 +50,9 @@ public interface IChair extends Listener{
 	
 	// CALL CHAIR EVENT
 	@EventHandler
-	default void onEntityMount(EntityMountEvent event) {
-		Player player = getPlayer();
-		if(event.getEntity().equals(player)) Bukkit.getPluginManager().callEvent(new PlayerSitEvent(player, this, true));
-	}
-	@EventHandler
 	default void onEntityDismount(EntityDismountEvent event) {
 		Player player = getPlayer();
-		if(event.getEntity().equals(player)) Bukkit.getPluginManager().callEvent(new PlayerSitEvent(player, this, false));
+		if(event.getEntity().equals(player)) Bukkit.getPluginManager().callEvent(new PlayerChairSwitchEvent(player, this, false));
 	}
 
 	// CHANGE LOCATION TO SAVEPOINT AND REMOVE ARMOR_STAND

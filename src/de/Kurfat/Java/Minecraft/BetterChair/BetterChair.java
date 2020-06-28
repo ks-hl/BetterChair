@@ -26,6 +26,8 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 
+import de.Kurfat.Java.Minecraft.BetterChair.Events.PlayerChairCreateEvent;
+import de.Kurfat.Java.Minecraft.BetterChair.Events.PlayerChairSwitchEvent;
 import de.Kurfat.Java.Minecraft.BetterChair.Types.BedChair;
 import de.Kurfat.Java.Minecraft.BetterChair.Types.BlockChair;
 import de.Kurfat.Java.Minecraft.BetterChair.Types.CarpetChair;
@@ -146,8 +148,12 @@ public class BetterChair extends JavaPlugin implements Listener{
 		
 		IChair chair = createChair(player, block);
 		if(chair == null) return;
+		PlayerChairCreateEvent customEvent = new PlayerChairCreateEvent(player, chair);
+		Bukkit.getPluginManager().callEvent(customEvent);
+		if(customEvent.isCancelled()) return;
 		if(WORLDGUARD != null && WORLDGUARD.check(player, chair) == false) return;
 		chair.spawn();
+		Bukkit.getPluginManager().callEvent(new PlayerChairSwitchEvent(player, chair, true));
 	}
 	
 	public static enum ChairType {

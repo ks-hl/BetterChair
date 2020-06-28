@@ -1,27 +1,21 @@
-package de.Kurfat.Java.Minecraft.BetterChair;
+package de.Kurfat.Java.Minecraft.BetterChair.Events;
 
 import org.bukkit.entity.Player;
 import org.bukkit.event.HandlerList;
-import org.bukkit.event.player.PlayerEvent;
 
 import de.Kurfat.Java.Minecraft.BetterChair.Types.IChair;
 
-public class PlayerSitEvent extends PlayerEvent{
-	
+public class PlayerChairSwitchEvent extends PlayerChairEvent {
+
 	public static HandlerList HANDLERS = new HandlerList();
 	
-	private IChair chair;
 	private boolean enable;
 	
-	public PlayerSitEvent(Player player, IChair chair, boolean enable) {
-		super(player);
-		this.chair = chair;
+	public PlayerChairSwitchEvent(Player player, IChair chair, boolean enable) {
+		super(player, chair);
 		this.enable = enable;
 	}
-
-	public IChair getChair() {
-		return chair;
-	}
+	
 	public boolean isEnable() {
 		return enable;
 	}
@@ -33,4 +27,5 @@ public class PlayerSitEvent extends PlayerEvent{
 	public static HandlerList getHandlerList() {
 		return HANDLERS;
 	}
+
 }
