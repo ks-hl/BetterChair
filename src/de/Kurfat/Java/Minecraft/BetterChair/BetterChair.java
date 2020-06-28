@@ -45,7 +45,7 @@ public class BetterChair extends JavaPlugin implements Listener{
 	
 	public BetterChair() {}
 	
-	public IChair getChair(Player player, Block block) {
+	private IChair createChair(Player player, Block block) {
 		if(SETTINGS.get(ChairType.STAIR)) try { return new StairChair(player, block); } catch (TypeParseException e) {}
 		if(SETTINGS.get(ChairType.SLAP)) try { return new SlapChair(player, block); } catch (TypeParseException e) {}
 		if(SETTINGS.get(ChairType.BED)) try { return new BedChair(player, block); } catch (TypeParseException e) {}
@@ -76,12 +76,8 @@ public class BetterChair extends JavaPlugin implements Listener{
 					byte[] bytes = new byte[list.size()];
 					for(int i = 0; i < list.size(); i++) bytes[i] = list.get(i);
 					String version = new String(bytes);
-					if(getDescription().getVersion().equals(version)) {
-						System.out.println("[BetterChair] Plugin is up to date.");
-						return;
-					}
-					System.out.println("[BetterChair] Version \"" + version + "\" is available: https://www.spigotmc.org/resources/betterchair.71734/");
-					return;
+					if(getDescription().getVersion().equals(version)) System.out.println("[BetterChair] Plugin is up to date.");
+					else System.out.println("[BetterChair] Version \"" + version + "\" is available: https://www.spigotmc.org/resources/betterchair.71734/");
 				} catch (IOException e) {
 					System.out.println("[BetterChair] No connection to the Spigot server to check for updates.");
 				}
@@ -96,11 +92,7 @@ public class BetterChair extends JavaPlugin implements Listener{
 		} catch (Exception e) {
 			SETTINGS = new HashMap<ChairType, Boolean>();
 			for(ChairType type : ChairType.values()) SETTINGS.put(type, true);
-			try {
-				save();
-			} catch (IOException e1) {
-				e1.printStackTrace();
-			}
+			try { save(); } catch (IOException e1) {e1.printStackTrace(); }
 		}
 		try {
 			SpigotVersion version = SpigotVersion.currentVersion();
@@ -152,7 +144,7 @@ public class BetterChair extends JavaPlugin implements Listener{
 				|| Chair.CACHE_BY_PLAYER.containsKey(player)
 				|| block.getRelative(BlockFace.UP).isPassable() == false) return;
 		
-		IChair chair = getChair(player, block);
+		IChair chair = createChair(player, block);
 		if(chair == null) return;
 		if(WORLDGUARD != null && WORLDGUARD.check(player, chair) == false) return;
 		chair.spawn();
