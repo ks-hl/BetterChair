@@ -18,7 +18,8 @@ public enum SpigotVersion {
 				|| version.endsWith("(MC: 1.16.1)") 
 				|| version.endsWith("(MC: 1.16.2)") 
 				|| version.endsWith("(MC: 1.16.3)") 
-				|| version.endsWith("(MC: 1.16.4)")) return VERSION_1_16;
+				|| version.endsWith("(MC: 1.16.4)")
+				|| version.endsWith("(MC: 1.16.5)")) return VERSION_1_16;
 		if(version.endsWith("(MC: 1.15)") 
 				|| version.endsWith("(MC: 1.15.1)") 
 				|| version.endsWith("(MC: 1.15.2)") 
