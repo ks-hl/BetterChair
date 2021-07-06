@@ -42,9 +42,26 @@ import de.Kurfat.Java.Minecraft.BetterChair.Types.StairChair;
 
 public class BetterChair extends JavaPlugin implements Listener{
 
+	/*
+	 * Spigot Version search changed.
+	 * BlockChair geändert
+	 * Der PlayerisOnGround() Check muss ggf. noch geändert werden.
+	 * Disable brauch deaktivirung der stühle
+	 * 
+	 */
+	
 	public static BetterChair INSTANCE;
+	public static void info(String message) {
+		Bukkit.getConsoleSender().sendMessage(ChatColor.DARK_GRAY + "[" + ChatColor.RED + "BetterChair" + ChatColor.DARK_GRAY + "]" + ChatColor.GREEN + " " + message + ChatColor.RESET);
+	}
+	public static void warn(String message) {
+		Bukkit.getConsoleSender().sendMessage(ChatColor.DARK_GRAY + "[" + ChatColor.RED + "BetterChair" + ChatColor.DARK_GRAY + "]" + ChatColor.YELLOW + " " + message + ChatColor.RESET);
+	}
+	public static void error(String message) {
+		Bukkit.getConsoleSender().sendMessage(ChatColor.DARK_GRAY + "[" + ChatColor.RED + "BetterChair" + ChatColor.DARK_GRAY + "]" + ChatColor.RED + " " + message + ChatColor.RESET);
+	}
 
-	private static boolean disable = true;
+	private static boolean IS_STARTED = false;
 	private static File SETTINGS_FILE;
 	protected static Settings SETTINGS;
 	private static File USERS_FILE;
@@ -61,8 +78,6 @@ public class BetterChair extends JavaPlugin implements Listener{
 		if(SETTINGS.getGlobal().get(ChairType.SNOW)) try { return new SnowChair(player, block); } catch (TypeParseException e) {}
 		if(SETTINGS.getGlobal().get(ChairType.CARPET)) try { return new CarpetChair(player, block); } catch (TypeParseException e) {}
 		if(SETTINGS.getGlobal().get(ChairType.BLOCK)) try { return new BlockChair(player, block); } catch (TypeParseException e) {}
-		if(SETTINGS.getGlobal().get(ChairType.STAIR)) try { return new StairChair(player, block); } catch (TypeParseException e) {}
-		if(SETTINGS.getGlobal().get(ChairType.STAIR)) try { return new StairChair(player, block); } catch (TypeParseException e) {}
 		return null;
 	}
 	
@@ -75,59 +90,16 @@ public class BetterChair extends JavaPlugin implements Listener{
 	public void onEnable() {
 		INSTANCE = this;
 		
-		// LOAD FILES
-		String path = getDataFolder().getAbsolutePath();
-		Gson gson = new GsonBuilder().create();
-		try {
-			SETTINGS_FILE  = new File(path + "/settings.json");
-			SETTINGS = gson.fromJson(new FileReader(SETTINGS_FILE), Settings.class);
-			if(SETTINGS.global == null || SETTINGS.global.size() == 0 || SETTINGS.message == null) {
-				disable = false;
-				System.out.println(ChatColor.DARK_RED + "[BetterChair] Settings could not be loaded. Please check your settings. If you need help you can reach me via Spigot @Kurfat." + ChatColor.RESET);
-				return;
-			}
-			System.out.println("[BetterChair] Settings was loaded.");
-		} catch (FileNotFoundException e) {
-			SETTINGS = new Settings();
-			SETTINGS.global = new HashMap<ChairType, Boolean>();
-			for(ChairType type : ChairType.values()) SETTINGS.global.put(type, true);
-			System.out.println("[BetterChair] Settings not found. A new one is created.");
-		} catch (Exception e) {
-			disable = false;
-			System.out.println(ChatColor.DARK_RED + "[BetterChair] Settings could not be loaded. Please check your settings. If you need help you can reach me via Spigot @Kurfat." + ChatColor.RESET);
-			e.printStackTrace();
-			return;
-		}
-		try {
-			USERS_FILE  = new File(path + "/users.json");
-			USERS = gson.fromJson(new FileReader(USERS_FILE), new TypeToken<HashMap<UUID, Boolean>>(){}.getType());
-			System.out.println("[BetterChair] Users was loaded.");
-		} catch (FileNotFoundException e) {
-			USERS = new HashMap<UUID, Boolean>();
-			System.out.println("[BetterChair] Users not found. A new one is created.");
-		} catch (Exception e) {
-			disable = false;
-			System.out.println(ChatColor.DARK_RED + "[BetterChair] Users could not be loaded. Please check your settings. If you need help you can reach me via Spigot @Kurfat." + ChatColor.RESET);
-			e.printStackTrace();
-			return;
-		}
-		
 		// CHECK SPIGOT VERSION
-		try {
-			SpigotVersion version = SpigotVersion.currentVersion();
-			if(version != SpigotVersion.VERSION_UNKNOWN) BlockChair.start(version);
-			else {
-				disable = false;
-				System.out.println("[BetterChair] This version is not supported!");
-				return;
-			}
-		} catch (Exception e) {
-			disable = false;
-			System.out.println("[BetterChair] This version is not supported!");
+		int version = SpigotVersion.current();
+		if(version < 14) {
+			error("This plugin is not supported under 1.14.");
 			return;
 		}
-		
-		// CHECK PLUGIN VERSION
+		else if(version < 17) {
+			error("This version of the plugin does not support your spigot version. Please use BetterChair version 1.7.1 for 1.14 - 1.16: https://www.spigotmc.org/resources/betterchair.71734/history");
+			return;
+		}
 		Bukkit.getScheduler().runTaskAsynchronously(this, new Runnable() {
 			@Override
 			public void run() {
@@ -144,17 +116,50 @@ public class BetterChair extends JavaPlugin implements Listener{
 					byte[] bytes = new byte[list.size()];
 					for(int i = 0; i < list.size(); i++) bytes[i] = list.get(i);
 					String version = new String(bytes);
-					if(getDescription().getVersion().equals(version)) System.out.println("[BetterChair] Plugin is up to date.");
-					else System.out.println("[BetterChair] Version \"" + version + "\" is available: https://www.spigotmc.org/resources/betterchair.71734/");
+					if(getDescription().getVersion().equals(version)) info("Plugin is up to date.");
+					else warn("Version " + version + " is available: https://www.spigotmc.org/resources/betterchair.71734/");
 				} catch (IOException e) {
-					System.out.println("[BetterChair] No connection to the Spigot server to check for updates.");
+					error("No connection to the Spigot server to check for updates.");
 				}
 			}
-		});				
+		});		
+		
+		// LOAD FILES
+		String path = getDataFolder().getAbsolutePath();
+		Gson gson = new GsonBuilder().create();
+		try {
+			SETTINGS_FILE  = new File(path + "/settings.json");
+			SETTINGS = gson.fromJson(new FileReader(SETTINGS_FILE), Settings.class);
+			if(SETTINGS.global == null || SETTINGS.global.size() == 0 || SETTINGS.message == null) {
+				error("Settings could not be loaded. Please check your settings. If you need help you can reach me via Spigot @Kurfat.");
+				return;
+			}
+			info("Settings was loaded.");
+		} catch (FileNotFoundException e) {
+			SETTINGS = new Settings();
+			SETTINGS.global = new HashMap<ChairType, Boolean>();
+			for(ChairType type : ChairType.values()) SETTINGS.global.put(type, true);
+			warn("Settings not found. A new one is created.");
+		} catch (Exception e) {
+			error("Settings could not be loaded. Please check your settings. If you need help you can reach me via Spigot @Kurfat.");
+			return;
+		}
+		try {
+			USERS_FILE  = new File(path + "/users.json");
+			USERS = gson.fromJson(new FileReader(USERS_FILE), new TypeToken<HashMap<UUID, Boolean>>(){}.getType());
+			info("Users was loaded.");
+		} catch (FileNotFoundException e) {
+			USERS = new HashMap<UUID, Boolean>();
+			warn("Users not found. A new one is created.");
+		} catch (Exception e) {
+			error("Users could not be loaded. Please check your settings. If you need help you can reach me via Spigot @Kurfat.");
+			return;
+		}
+		
+		IS_STARTED = true;
 		
 		// SAVE FILES
-		try { save(); } catch (IOException e1) {e1.printStackTrace(); }
-		
+		try { save(); } catch (IOException ex) { ex.printStackTrace(); }
 		
 		// START
 		EntityPassengerRotate.INSTANCE.start();
@@ -178,14 +183,14 @@ public class BetterChair extends JavaPlugin implements Listener{
 	}
 	@Override
 	public void onDisable() {
-		if(disable == false) return;
+		if(IS_STARTED == false) return;
+		new ArrayList<>(Chair.CACHE_BY_PLAYER.values()).forEach(c -> {
+			c.eject();
+			c.remove();
+		});;
 		HandlerList.unregisterAll((Listener)this);
 		EntityPassengerRotate.INSTANCE.stop();
-		try {
-			save();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+		try { save(); } catch (IOException ex) { ex.printStackTrace(); }
 	}
 	
 	@EventHandler

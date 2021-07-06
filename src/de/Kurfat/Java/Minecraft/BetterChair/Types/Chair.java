@@ -6,7 +6,6 @@ import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.entity.ArmorStand;
-import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.HandlerList;
 import org.bukkit.util.Consumer;
@@ -74,13 +73,4 @@ public abstract class Chair implements IChair{
 		CACHE_BY_PLAYER.remove(player);
 	}
 	
-	protected boolean changeYawField(Entity entity, float yaw) {
-		try {
-			Object nmsEntity = entity.getClass().getMethod("getHandle").invoke(entity);
-		    nmsEntity.getClass().getField("yaw").set(nmsEntity, yaw);
-		    return true;
-		} catch (Exception e) {
-			return false;
-		}
-	}
 }

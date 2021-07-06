@@ -2,7 +2,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>BetterChair</groupId>
 	<artifactId>BetterChair</artifactId>
-	<version>1.7.0</version>
+	<version>1.8.0</version>
 	<build>
 		<sourceDirectory>src</sourceDirectory>
 		<plugins>
@@ -30,7 +30,7 @@
 		<dependency>
 			<groupId>org.spigotmc</groupId>
 			<artifactId>spigot-api</artifactId>
-			<version>1.16.1-R0.1-SNAPSHOT</version>
+			<version>LATEST</version>
 			<scope>provided</scope>
 		</dependency>
 		<dependency>

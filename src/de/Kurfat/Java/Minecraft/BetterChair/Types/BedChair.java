@@ -91,8 +91,7 @@ public class BedChair extends Chair{
 	}
 	@EventHandler
 	public void onEntityPassengerRotate(EntityPassengerRotateEvent event) {
-		if(event.getEntity().equals(player) == false) return;
-		changeYawField(armorStand, event.getNewLocation().getYaw());
+		if(event.getEntity().equals(player)) armorStand.setRotation(event.getNewLocation().getYaw(), 0);
 	}
 	
 }
