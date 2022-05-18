@@ -2,7 +2,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>BetterChair</groupId>
 	<artifactId>BetterChair</artifactId>
-	<version>1.8.0</version>
+	<version>1.9.0</version>
 	<build>
 		<sourceDirectory>src</sourceDirectory>
 		<plugins>

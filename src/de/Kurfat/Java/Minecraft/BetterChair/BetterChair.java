@@ -67,7 +67,7 @@ public class BetterChair extends JavaPlugin implements Listener{
 	private static File USERS_FILE;
 	protected static HashMap<UUID, Boolean> USERS;
 	
-	private static WorldGuardAddon WORLDGUARDADDON;
+	public static WorldGuardAddon WORLDGUARDADDON;
 	
 	public BetterChair() {}
 	
@@ -193,6 +193,7 @@ public class BetterChair extends JavaPlugin implements Listener{
 		try { save(); } catch (IOException ex) { ex.printStackTrace(); }
 	}
 	
+	@Deprecated
 	@EventHandler
 	public void onPlayerInteract(PlayerInteractEvent event) {
 		// CHECK PLAYER

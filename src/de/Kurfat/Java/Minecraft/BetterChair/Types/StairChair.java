@@ -11,7 +11,7 @@ import org.bukkit.entity.Player;
 import de.Kurfat.Java.Minecraft.BetterChair.TypeParseException;
 import de.Kurfat.Java.Minecraft.BetterChair.BetterChair.ChairType;
 
-public class StairChair extends Chair{
+public class StairChair extends Chair {
 
 	private Stairs stairs;
 	

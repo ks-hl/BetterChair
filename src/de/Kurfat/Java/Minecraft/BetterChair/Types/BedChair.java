@@ -13,7 +13,7 @@ import de.Kurfat.Java.Minecraft.BetterChair.TypeParseException;
 import de.Kurfat.Java.Minecraft.BetterChair.BetterChair.ChairType;
 import de.Kurfat.Java.Minecraft.BetterChair.EntityPassengerRotate.EntityPassengerRotateEvent;
 
-public class BedChair extends Chair{
+public class BedChair extends Chair {
 
 	private Part part;
 	private Block headBlock;

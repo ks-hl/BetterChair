@@ -10,7 +10,7 @@ import de.Kurfat.Java.Minecraft.BetterChair.EntityPassengerRotate.EntityPassenge
 import de.Kurfat.Java.Minecraft.BetterChair.TypeParseException;
 import de.Kurfat.Java.Minecraft.BetterChair.BetterChair.ChairType;
 
-public class SlapChair extends Chair{
+public class SlapChair extends Chair {
 
 	private Slab slab;
 	

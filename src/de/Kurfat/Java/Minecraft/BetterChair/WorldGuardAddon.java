@@ -35,14 +35,16 @@ public class WorldGuardAddon {
 		}
 	}
 	
-	public boolean check(Player player, IChair chair) {
+	public boolean check(Player player, StateFlag flag) {
 		for(RegionManager manager : worldGuard.getPlatform().getRegionContainer().getLoaded()) if(manager.getName().equals(player.getWorld().getName())){
 			ApplicableRegionSet regions = manager.getApplicableRegions(BlockVector3.at(player.getLocation().getX(), player.getLocation().getY(), player.getLocation().getZ()));
 			LocalPlayer localP = plugin.wrapPlayer(player);
-			StateFlag flag = flags.get(chair.getType());
 			return regions.queryState(localP, flag) == State.ALLOW;
 		}
 		return true;
+	}
+	public boolean check(Player player, IChair chair) {
+		return check(player, flags.get(chair.getType()));
 	}
 	
 }

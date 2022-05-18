@@ -9,7 +9,7 @@ import de.Kurfat.Java.Minecraft.BetterChair.TypeParseException;
 import de.Kurfat.Java.Minecraft.BetterChair.BetterChair.ChairType;
 import de.Kurfat.Java.Minecraft.BetterChair.EntityPassengerRotate.EntityPassengerRotateEvent;
 
-public class SnowChair extends Chair{
+public class SnowChair extends Chair {
 
 	public SnowChair(Player player, Block block) throws TypeParseException {
 		super(player, block);

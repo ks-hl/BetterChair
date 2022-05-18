@@ -1,22 +1,27 @@
 package de.Kurfat.Java.Minecraft.BetterChair.Types;
 
+import com.sk89q.worldguard.protection.flags.Flags;
+
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPhysicsEvent;
+import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.player.PlayerTeleportEvent;
 import org.spigotmc.event.entity.EntityDismountEvent;
 
+import de.Kurfat.Java.Minecraft.BetterChair.BetterChair;
 import de.Kurfat.Java.Minecraft.BetterChair.BetterChair.ChairType;
 import de.Kurfat.Java.Minecraft.BetterChair.Events.PlayerChairSwitchEvent;
 
-public interface IChair extends Listener{
+public interface IChair extends Listener {
 
 	// DEFAULT CHAIR METHODES
 	public Player getPlayer();
@@ -44,8 +49,12 @@ public interface IChair extends Listener{
 	}
 	@EventHandler
 	default void onEntityDamage(EntityDamageEvent event) {
-		Player player = getPlayer();
-		if(event.getEntity().equals(player)) eject();
+		if(event.getEntity().equals(getPlayer()) == false) return;
+		else if(BetterChair.WORLDGUARDADDON == null || event instanceof EntityDamageByEntityEvent == false) eject();
+		else {
+			Entity damager = ((EntityDamageByEntityEvent) event).getDamager();
+			if(BetterChair.WORLDGUARDADDON.check(getPlayer(), damager instanceof Player ? Flags.PVP : Flags.MOB_DAMAGE)) eject();
+		}
 	}
 	
 	// CALL CHAIR EVENT
