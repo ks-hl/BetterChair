@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
+import java.util.Map.Entry;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -66,19 +67,37 @@ public class BetterChair extends JavaPlugin implements Listener{
 	protected static Settings SETTINGS;
 	private static File USERS_FILE;
 	protected static HashMap<UUID, Boolean> USERS;
-	
+	private static HashMap<ChairType, Class<? extends IChair>> BUILDERS = new HashMap<>();
+
 	public static WorldGuardAddon WORLDGUARDADDON;
 	
-	public BetterChair() {}
+	public BetterChair() {
+		BUILDERS.put(ChairType.STAIR, StairChair.class);
+		BUILDERS.put(ChairType.SLAP, SlapChair.class);
+		BUILDERS.put(ChairType.BED, BedChair.class);
+		BUILDERS.put(ChairType.SNOW, SnowChair.class);
+		BUILDERS.put(ChairType.CARPET, CarpetChair.class);
+		BUILDERS.put(ChairType.BLOCK, BlockChair.class);
+	}
 	
-	private IChair createChair(Player player, Block block) {
-		if(SETTINGS.getGlobal().get(ChairType.STAIR)) try { return new StairChair(player, block); } catch (TypeParseException e) {}
-		if(SETTINGS.getGlobal().get(ChairType.SLAP)) try { return new SlapChair(player, block); } catch (TypeParseException e) {}
-		if(SETTINGS.getGlobal().get(ChairType.BED)) try { return new BedChair(player, block); } catch (TypeParseException e) {}
-		if(SETTINGS.getGlobal().get(ChairType.SNOW)) try { return new SnowChair(player, block); } catch (TypeParseException e) {}
-		if(SETTINGS.getGlobal().get(ChairType.CARPET)) try { return new CarpetChair(player, block); } catch (TypeParseException e) {}
-		if(SETTINGS.getGlobal().get(ChairType.BLOCK)) try { return new BlockChair(player, block); } catch (TypeParseException e) {}
-		return null;
+	public static IChair createChair(Player player, Block block) throws ChairException {
+		for(Entry<ChairType, Class<? extends IChair>> builder : BUILDERS.entrySet()) if(SETTINGS.getGlobal().get(builder.getKey())) {
+			IChair chair;
+			try {
+				chair = builder.getValue().getConstructor(Player.class, Block.class).newInstance(player, block);
+				if(chair == null) continue;
+			} catch (Exception e) {
+				continue;
+			}
+			PlayerChairCreateEvent customEvent = new PlayerChairCreateEvent(player, chair);
+			Bukkit.getPluginManager().callEvent(customEvent);
+			if(customEvent.isCancelled()) throw new ChairException(player, block, "The block creation was blocked by an unknown plugin.");
+			if(WORLDGUARDADDON != null && WORLDGUARDADDON.check(player, chair) == false) throw new ChairException(player, block, "Creating the block was blocked by WorldGuard.");
+			chair.spawn();
+			Bukkit.getPluginManager().callEvent(new PlayerChairSwitchEvent(player, chair, true));
+			return chair;
+		}
+		throw new ChairException(player, block, "This block can not be used as a chair.");
 	}
 	
 	@Override
@@ -195,7 +214,7 @@ public class BetterChair extends JavaPlugin implements Listener{
 	
 	@Deprecated
 	@EventHandler
-	public void onPlayerInteract(PlayerInteractEvent event) {
+	public void onPlayerInteract(PlayerInteractEvent event) throws ChairException {
 		// CHECK PLAYER
 		if(event.getHand() != EquipmentSlot.HAND 
 				|| event.hasItem() 
@@ -210,14 +229,7 @@ public class BetterChair extends JavaPlugin implements Listener{
 				|| Chair.CACHE_BY_PLAYER.containsKey(player)
 				|| block.getRelative(BlockFace.UP).isPassable() == false) return;
 		// USE BLOCK
-		IChair chair = createChair(player, block);
-		if(chair == null) return;
-		PlayerChairCreateEvent customEvent = new PlayerChairCreateEvent(player, chair);
-		Bukkit.getPluginManager().callEvent(customEvent);
-		if(customEvent.isCancelled()) return;
-		if(WORLDGUARDADDON != null && WORLDGUARDADDON.check(player, chair) == false) return;
-		chair.spawn();
-		Bukkit.getPluginManager().callEvent(new PlayerChairSwitchEvent(player, chair, true));
+		createChair(player, block);
 	}
 	
 	public static enum ChairType {
