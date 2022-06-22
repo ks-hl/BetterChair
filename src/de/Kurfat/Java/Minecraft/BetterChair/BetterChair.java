@@ -28,6 +28,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.internal.LinkedTreeMap;
 import com.google.gson.reflect.TypeToken;
 
 import de.Kurfat.Java.Minecraft.BetterChair.Events.PlayerChairCreateEvent;
@@ -43,23 +44,18 @@ import de.Kurfat.Java.Minecraft.BetterChair.Types.StairChair;
 
 public class BetterChair extends JavaPlugin implements Listener{
 
-	/*
-	 * Spigot Version search changed.
-	 * BlockChair geändert
-	 * Der PlayerisOnGround() Check muss ggf. noch geändert werden.
-	 * Disable brauch deaktivirung der stühle
-	 * 
-	 */
-	
 	public static BetterChair INSTANCE;
-	public static void info(String message) {
-		Bukkit.getConsoleSender().sendMessage(ChatColor.DARK_GRAY + "[" + ChatColor.RED + "BetterChair" + ChatColor.DARK_GRAY + "]" + ChatColor.GREEN + " " + message + ChatColor.RESET);
+	private static void message(ChatColor color, String message) {
+		Bukkit.getConsoleSender().sendMessage(ChatColor.DARK_GRAY + "[" + ChatColor.RED + "BetterChair" + ChatColor.DARK_GRAY + "]" + color + " " + message + ChatColor.RESET);
 	}
-	public static void warn(String message) {
-		Bukkit.getConsoleSender().sendMessage(ChatColor.DARK_GRAY + "[" + ChatColor.RED + "BetterChair" + ChatColor.DARK_GRAY + "]" + ChatColor.YELLOW + " " + message + ChatColor.RESET);
+	private static void info(String message) {
+		message(ChatColor.GREEN, message);
 	}
-	public static void error(String message) {
-		Bukkit.getConsoleSender().sendMessage(ChatColor.DARK_GRAY + "[" + ChatColor.RED + "BetterChair" + ChatColor.DARK_GRAY + "]" + ChatColor.RED + " " + message + ChatColor.RESET);
+	private static void warn(String message) {
+		message(ChatColor.YELLOW, message);
+	}
+	private static void error(String message) {
+		message(ChatColor.RED, message);
 	}
 
 	private static boolean IS_STARTED = false;
@@ -67,7 +63,7 @@ public class BetterChair extends JavaPlugin implements Listener{
 	protected static Settings SETTINGS;
 	private static File USERS_FILE;
 	protected static HashMap<UUID, Boolean> USERS;
-	private static HashMap<ChairType, Class<? extends IChair>> BUILDERS = new HashMap<>();
+	private static LinkedTreeMap<ChairType, Class<? extends IChair>> BUILDERS = new LinkedTreeMap<>();
 
 	public static WorldGuardAddon WORLDGUARDADDON;
 	
@@ -95,6 +91,9 @@ public class BetterChair extends JavaPlugin implements Listener{
 			if(WORLDGUARDADDON != null && WORLDGUARDADDON.check(player, chair) == false) throw new ChairException(player, block, "Creating the block was blocked by WorldGuard.");
 			chair.spawn();
 			Bukkit.getPluginManager().callEvent(new PlayerChairSwitchEvent(player, chair, true));
+			// System.out.println(player.getName() + " " + chair.getClass().getSimpleName() + " " + block.getBlockData().getClass().getSimpleName() + " " + block.getType());
+			// for(Class<?> i : block.getBlockData().getClass().getInterfaces()) System.out.println("- " + i.getSimpleName());
+			// for(Class<?> i : block.getBlockData().getClass().getClasses()) System.out.println("- " + i.getSimpleName());
 			return chair;
 		}
 		throw new ChairException(player, block, "This block can not be used as a chair.");
@@ -152,6 +151,10 @@ public class BetterChair extends JavaPlugin implements Listener{
 			if(SETTINGS.global == null || SETTINGS.global.size() == 0 || SETTINGS.message == null) {
 				error("Settings could not be loaded. Please check your settings. If you need help you can reach me via Spigot @Kurfat.");
 				return;
+			}
+			for(ChairType type : ChairType.values()) if(SETTINGS.global.containsKey(type) == false) {
+				SETTINGS.global.put(type, true);
+				warn("The chair \""+ type + "\" was not set in the settings and now set to \"true\"!");
 			}
 			info("Settings was loaded.");
 		} catch (FileNotFoundException e) {
@@ -214,8 +217,7 @@ public class BetterChair extends JavaPlugin implements Listener{
 	
 	@Deprecated
 	@EventHandler
-	public void onPlayerInteract(PlayerInteractEvent event) throws ChairException {
-		// CHECK PLAYER
+	public void onPlayerInteract(PlayerInteractEvent event) {
 		if(event.getHand() != EquipmentSlot.HAND 
 				|| event.hasItem() 
 				|| event.getAction() != Action.RIGHT_CLICK_BLOCK 
@@ -223,13 +225,11 @@ public class BetterChair extends JavaPlugin implements Listener{
 				|| USERS.containsKey(event.getPlayer().getUniqueId()) && USERS.get(event.getPlayer().getUniqueId()) == false) return;
 		Player player = event.getPlayer();
 		Block block = event.getClickedBlock();
-		// CHECK BLOCK
 		if(block.getLocation().add(0.5, 0.5, 0.5).distance(player.getLocation()) > 2 
 				|| Chair.CACHE_BY_BLOCK.containsKey(block)
 				|| Chair.CACHE_BY_PLAYER.containsKey(player)
 				|| block.getRelative(BlockFace.UP).isPassable() == false) return;
-		// USE BLOCK
-		createChair(player, block);
+		try { createChair(player, block); } catch (ChairException e) {}
 	}
 	
 	public static enum ChairType {
