@@ -1,0 +1,8 @@
+name: BetterChair
+version: 1.11.0
+author: Kurfat
+main: de.Kurfat.Java.Minecraft.BetterChair.BetterChair
+api-version: 1.17
+softdepend: [WorldGuard]
+commands:
+  chair:

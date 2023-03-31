@@ -207,7 +207,6 @@ public class BetterChair extends JavaPlugin implements Listener{
 	public void onDisable() {
 		if(IS_STARTED == false) return;
 		new ArrayList<>(Chair.CACHE_BY_PLAYER.values()).forEach(c -> {
-			c.eject();
 			c.remove();
 		});;
 		HandlerList.unregisterAll((Listener)this);

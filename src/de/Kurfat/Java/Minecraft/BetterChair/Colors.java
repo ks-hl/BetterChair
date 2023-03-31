@@ -29,7 +29,7 @@ public class Colors {
 		
 		@Override
 		public String toString() {
-			return COLOR_PATTERN.formatted(consoleCode);
+			return String.format(COLOR_PATTERN, consoleCode);
 		}
 		
 		public static enum LIGHT implements IColor {
@@ -58,7 +58,7 @@ public class Colors {
 			
 			@Override
 			public String toString() {
-				return COLOR_PATTERN.formatted(consoleCode);
+				return String.format(COLOR_PATTERN, consoleCode);
 			}
 			
 		}
@@ -88,7 +88,7 @@ public class Colors {
 			
 			@Override
 			public String toString() {
-				return COLOR_PATTERN.formatted(consoleCode);
+				return String.format(COLOR_PATTERN, consoleCode);
 			}
 			
 		}
@@ -118,7 +118,7 @@ public class Colors {
 		
 		@Override
 		public String toString() {
-			return FORMAT_PATTERN.formatted(consoleCode);
+			return String.format(COLOR_PATTERN, consoleCode);
 		}
 		
 	}

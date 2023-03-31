@@ -80,13 +80,13 @@ public class BedChair extends Chair {
 	@Override
 	public void onBlockBreak(BlockBreakEvent event) {
 		Block block = event.getBlock();
-		if(headBlock.equals(block) || footBlock.equals(block)) eject();
+		if(headBlock.equals(block) || footBlock.equals(block)) remove();
 	}
 	@EventHandler
 	@Override
 	public void onBlockPhysics(BlockPhysicsEvent event) {
 		Block block = event.getBlock();
-		if(headBlock.equals(block) || footBlock.equals(block)) eject();
+		if(headBlock.equals(block) || footBlock.equals(block)) remove();
 	}
 	@EventHandler
 	public void onEntityPassengerRotate(EntityPassengerRotateEvent event) {

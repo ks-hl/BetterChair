@@ -30,7 +30,6 @@ public interface IChair extends Listener {
 	public Location getLocation();
 	public Location getSavePoint();
 	public void spawn();
-	public void eject();
 	public void remove();
 	public ChairType getType();
 	
@@ -38,23 +37,23 @@ public interface IChair extends Listener {
 	@EventHandler(priority = EventPriority.MONITOR)
 	default void onPlayerQuit(PlayerQuitEvent event) {
 		Player player = getPlayer();
-		if(event.getPlayer().equals(player)) eject();
+		if(event.getPlayer().equals(player)) remove();
 	}
 	@EventHandler(priority = EventPriority.MONITOR)
 	default void onBlockBreak(BlockBreakEvent event) {
-		if(event.isCancelled() == false && event.getBlock().equals(getBlock())) eject();
+		if(event.isCancelled() == false && event.getBlock().equals(getBlock())) remove();
 	}
 	@EventHandler(priority = EventPriority.MONITOR)
 	default void onBlockPhysics(BlockPhysicsEvent event) {
-		if(event.isCancelled() == false && event.getBlock().equals(getBlock())) eject();
+		if(event.isCancelled() == false && event.getBlock().equals(getBlock())) remove();
 	}
 	@EventHandler(priority = EventPriority.MONITOR)
 	default void onEntityDamage(EntityDamageEvent event) {
 		if(event.isCancelled() || event.getEntity().equals(getPlayer()) == false) return;
-		else if(BetterChair.WORLDGUARDADDON == null || event instanceof EntityDamageByEntityEvent == false) eject();
+		else if(BetterChair.WORLDGUARDADDON == null || event instanceof EntityDamageByEntityEvent == false) remove();
 		else {
 			Entity damager = ((EntityDamageByEntityEvent) event).getDamager();
-			if(BetterChair.WORLDGUARDADDON.check(getPlayer(), damager instanceof Player ? Flags.PVP : Flags.MOB_DAMAGE)) eject();
+			if(BetterChair.WORLDGUARDADDON.check(getPlayer(), damager instanceof Player ? Flags.PVP : Flags.MOB_DAMAGE)) remove();
 		}
 	}
 	
@@ -63,10 +62,11 @@ public interface IChair extends Listener {
 	default void onEntityDismount(EntityDismountEvent event) {
 		Player player = getPlayer();
 		if(event.isCancelled() == false && event.getEntity().equals(player)) Bukkit.getPluginManager().callEvent(new PlayerChairSwitchEvent(player, this, false));
+		remove();
 	}
 
 	// CHANGE LOCATION TO SAVEPOINT AND REMOVE ARMOR_STAND
-	@EventHandler(priority = EventPriority.MONITOR)
+	@EventHandler(priority = EventPriority.HIGHEST)
 	default void onPlayerTeleport(PlayerTeleportEvent event) {
 		Player player = getPlayer();
 		if(event.isCancelled() || event.getPlayer().equals(player) == false) return;
