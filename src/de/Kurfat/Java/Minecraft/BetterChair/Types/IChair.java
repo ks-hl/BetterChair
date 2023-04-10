@@ -32,7 +32,7 @@ public interface IChair extends Listener {
 	public void spawn();
 	public void remove();
 	public ChairType getType();
-	
+
 	// REMOVE PASSENGERS FROM ARMOR_STAND
 	@EventHandler(priority = EventPriority.MONITOR)
 	default void onPlayerQuit(PlayerQuitEvent event) {
@@ -49,20 +49,22 @@ public interface IChair extends Listener {
 	}
 	@EventHandler(priority = EventPriority.MONITOR)
 	default void onEntityDamage(EntityDamageEvent event) {
-		if(event.isCancelled() || event.getEntity().equals(getPlayer()) == false) return;
-		else if(BetterChair.WORLDGUARDADDON == null || event instanceof EntityDamageByEntityEvent == false) remove();
-		else {
-			Entity damager = ((EntityDamageByEntityEvent) event).getDamager();
-			if(BetterChair.WORLDGUARDADDON.check(getPlayer(), damager instanceof Player ? Flags.PVP : Flags.MOB_DAMAGE)) remove();
-		}
+		if(event.isCancelled() || !event.getEntity().equals(getPlayer())) return;
+		if(BetterChair.WORLDGUARDADDON == null) return;
+		if(!(event instanceof EntityDamageByEntityEvent event1)) return;
+
+		Entity damager = event1.getDamager();
+		if(BetterChair.WORLDGUARDADDON.check(getPlayer(), damager instanceof Player ? Flags.PVP : Flags.MOB_DAMAGE)) remove();
 	}
-	
+
 	// CALL CHAIR EVENT
 	@EventHandler(priority = EventPriority.MONITOR)
 	default void onEntityDismount(EntityDismountEvent event) {
 		Player player = getPlayer();
-		if(event.isCancelled() == false && event.getEntity().equals(player)) Bukkit.getPluginManager().callEvent(new PlayerChairSwitchEvent(player, this, false));
-		remove();
+		if(event.isCancelled() == false && event.getEntity().equals(player)) {
+			Bukkit.getPluginManager().callEvent(new PlayerChairSwitchEvent(player, this, false));
+			remove();
+		}
 	}
 
 	// CHANGE LOCATION TO SAVEPOINT AND REMOVE ARMOR_STAND

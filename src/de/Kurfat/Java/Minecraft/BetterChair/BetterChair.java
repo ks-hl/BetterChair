@@ -101,7 +101,11 @@ public class BetterChair extends JavaPlugin implements Listener{
 	
 	@Override
 	public void onLoad() {
-		if(Bukkit.getPluginManager().getPlugin("WorldGuard") != null) WORLDGUARDADDON = new WorldGuardAddon();
+		try {
+			if (Bukkit.getPluginManager().getPlugin("WorldGuard") != null) WORLDGUARDADDON = new WorldGuardAddon();
+		} catch(Throwable t) {
+			getLogger().warning("Failed to initialize WorldGuard flags!");
+		}
 	}
 	
 	@Override
