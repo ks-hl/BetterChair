@@ -13,6 +13,7 @@ import java.util.List;
 import java.util.UUID;
 import java.util.Map.Entry;
 
+import de.Kurfat.Java.Minecraft.BetterChair.Types.*;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.block.Block;
@@ -33,14 +34,6 @@ import com.google.gson.reflect.TypeToken;
 
 import de.Kurfat.Java.Minecraft.BetterChair.Events.PlayerChairCreateEvent;
 import de.Kurfat.Java.Minecraft.BetterChair.Events.PlayerChairSwitchEvent;
-import de.Kurfat.Java.Minecraft.BetterChair.Types.BedChair;
-import de.Kurfat.Java.Minecraft.BetterChair.Types.BlockChair;
-import de.Kurfat.Java.Minecraft.BetterChair.Types.CarpetChair;
-import de.Kurfat.Java.Minecraft.BetterChair.Types.Chair;
-import de.Kurfat.Java.Minecraft.BetterChair.Types.IChair;
-import de.Kurfat.Java.Minecraft.BetterChair.Types.SlapChair;
-import de.Kurfat.Java.Minecraft.BetterChair.Types.SnowChair;
-import de.Kurfat.Java.Minecraft.BetterChair.Types.StairChair;
 
 public class BetterChair extends JavaPlugin implements Listener{
 
@@ -94,6 +87,12 @@ public class BetterChair extends JavaPlugin implements Listener{
 			// System.out.println(player.getName() + " " + chair.getClass().getSimpleName() + " " + block.getBlockData().getClass().getSimpleName() + " " + block.getType());
 			// for(Class<?> i : block.getBlockData().getClass().getInterfaces()) System.out.println("- " + i.getSimpleName());
 			// for(Class<?> i : block.getBlockData().getClass().getClasses()) System.out.println("- " + i.getSimpleName());
+			return chair;
+		}
+		if(player.hasPermission("betterchair.sitanywhere")) {
+			IChair chair = new AnyChair(player, block);
+			chair.spawn();
+			Bukkit.getPluginManager().callEvent(new PlayerChairSwitchEvent(player, chair, true));
 			return chair;
 		}
 		throw new ChairException(player, block, "This block can not be used as a chair.");
