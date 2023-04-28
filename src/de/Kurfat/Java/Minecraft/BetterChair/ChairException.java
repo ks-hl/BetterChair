@@ -5,8 +5,8 @@ import org.bukkit.entity.Player;
 
 public class ChairException extends Exception {
 
-    private Player player;
-    private Block block;
+    private final Player player;
+    private final Block block;
 
     public ChairException(Player player, Block block, String message) {
         super(message);
@@ -17,8 +17,9 @@ public class ChairException extends Exception {
     public Player getPlayer() {
         return player;
     }
+
     public Block getBlock() {
         return block;
     }
-    
+
 }

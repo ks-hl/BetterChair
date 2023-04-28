@@ -1,21 +1,20 @@
 package de.Kurfat.Java.Minecraft.BetterChair.Events;
 
+import de.Kurfat.Java.Minecraft.BetterChair.Types.IChair;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerEvent;
 
-import de.Kurfat.Java.Minecraft.BetterChair.Types.IChair;
+public abstract class PlayerChairEvent extends PlayerEvent {
 
-public abstract class PlayerChairEvent extends PlayerEvent{
-	
-	private IChair chair;
-	
-	protected PlayerChairEvent(Player player, IChair chair) {
-		super(player);
-		this.chair = chair;
-	}
+    private final IChair chair;
 
-	public IChair getChair() {
-		return chair;
-	}
-	
+    protected PlayerChairEvent(Player player, IChair chair) {
+        super(player);
+        this.chair = chair;
+    }
+
+    public IChair getChair() {
+        return chair;
+    }
+
 }
