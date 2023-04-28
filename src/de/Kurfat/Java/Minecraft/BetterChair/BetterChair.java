@@ -69,7 +69,7 @@ public class BetterChair extends JavaPlugin implements Listener {
                 // for(Class<?> i : block.getBlockData().getClass().getClasses()) System.out.println("- " + i.getSimpleName());
                 return chair;
             }
-        if (player.hasPermission("betterchair.sitanywhere")) {
+        if (player.hasPermission("betterchair.sitanywhere") && block.getBoundingBox().getVolume() < 1) {
             IChair chair = new AnyChair(player, block);
             chair.spawn();
             Bukkit.getPluginManager().callEvent(new PlayerChairSwitchEvent(player, chair, true));
@@ -116,29 +116,26 @@ public class BetterChair extends JavaPlugin implements Listener {
             error("This version of the plugin does not support your spigot version. Please use BetterChair version 1.7.1 for 1.14 - 1.16: https://www.spigotmc.org/resources/betterchair.71734/history");
             return;
         }
-        Bukkit.getScheduler().runTaskAsynchronously(this, new Runnable() {
-            @Override
-            public void run() {
+        Bukkit.getScheduler().runTaskAsynchronously(this, () -> {
+            try {
+                InputStream in = new URL("https://api.spigotmc.org/legacy/update.php?resource=71734").openConnection().getInputStream();
+                List<Byte> list = new ArrayList<>();
                 try {
-                    InputStream in = new URL("https://api.spigotmc.org/legacy/update.php?resource=71734").openConnection().getInputStream();
-                    List<Byte> list = new ArrayList<Byte>();
-                    try {
-                        while (true) {
-                            byte b = (byte) in.read();
-                            if (b == -1) break;
-                            list.add(b);
-                        }
-                    } catch (Exception e) {
+                    while (true) {
+                        byte b = (byte) in.read();
+                        if (b == -1) break;
+                        list.add(b);
                     }
-                    byte[] bytes = new byte[list.size()];
-                    for (int i = 0; i < list.size(); i++) bytes[i] = list.get(i);
-                    String version = new String(bytes);
-                    if (getDescription().getVersion().equals(version)) info("Plugin is up to date.");
-                    else
-                        warn("Version " + version + " is available: https://www.spigotmc.org/resources/betterchair.71734/");
-                } catch (IOException e) {
-                    error("No connection to the Spigot server to check for updates.");
+                } catch (Exception ignored) {
                 }
+                byte[] bytes = new byte[list.size()];
+                for (int i = 0; i < list.size(); i++) bytes[i] = list.get(i);
+                String version1 = new String(bytes);
+                if (getDescription().getVersion().equals(version1)) info("Plugin is up to date.");
+                else
+                    warn("Version " + version1 + " is available: https://www.spigotmc.org/resources/betterchair.71734/");
+            } catch (IOException e) {
+                error("No connection to the Spigot server to check for updates.");
             }
         });
 
