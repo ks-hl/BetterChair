@@ -1,4 +1,4 @@
-package de.Kurfat.Java.Minecraft.BetterChair;
+package de.kurfat.betterchair;
 
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
