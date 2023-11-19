@@ -1,6 +1,6 @@
 package de.kurfat.betterchair.events;
 
-import de.kurfat.betterchair.types.IChair;
+import de.kurfat.betterchair.types.Chair;
 import org.bukkit.entity.Player;
 import org.bukkit.event.HandlerList;
 
@@ -12,7 +12,7 @@ public class PlayerChairSwitchEvent extends PlayerChairEvent {
 
     private final boolean enable;
 
-    public PlayerChairSwitchEvent(Player player, IChair chair, boolean enable) {
+    public PlayerChairSwitchEvent(Player player, Chair chair, boolean enable) {
         super(player, chair);
         this.enable = enable;
     }

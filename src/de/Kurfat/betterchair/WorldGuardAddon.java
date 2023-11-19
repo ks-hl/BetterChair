@@ -10,7 +10,7 @@ import com.sk89q.worldguard.protection.flags.StateFlag;
 import com.sk89q.worldguard.protection.flags.StateFlag.State;
 import com.sk89q.worldguard.protection.flags.registry.FlagRegistry;
 import com.sk89q.worldguard.protection.managers.RegionManager;
-import de.kurfat.betterchair.types.IChair;
+import de.kurfat.betterchair.types.Chair;
 import org.bukkit.entity.Player;
 
 import java.util.HashMap;
@@ -42,7 +42,7 @@ public class WorldGuardAddon {
         return true;
     }
 
-    public boolean check(Player player, IChair chair) {
+    public boolean check(Player player, Chair chair) {
         return check(player, flags.get(chair.getType()));
     }
 

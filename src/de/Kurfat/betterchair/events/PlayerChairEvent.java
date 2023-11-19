@@ -1,19 +1,19 @@
 package de.kurfat.betterchair.events;
 
-import de.kurfat.betterchair.types.IChair;
+import de.kurfat.betterchair.types.Chair;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerEvent;
 
 public abstract class PlayerChairEvent extends PlayerEvent {
 
-    private final IChair chair;
+    private final Chair chair;
 
-    protected PlayerChairEvent(Player player, IChair chair) {
+    protected PlayerChairEvent(Player player, Chair chair) {
         super(player);
         this.chair = chair;
     }
 
-    public IChair getChair() {
+    public Chair getChair() {
         return chair;
     }
 

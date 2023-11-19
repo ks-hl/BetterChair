@@ -1,6 +1,6 @@
 package de.kurfat.betterchair.events;
 
-import de.kurfat.betterchair.types.IChair;
+import de.kurfat.betterchair.types.Chair;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Cancellable;
 import org.bukkit.event.HandlerList;
@@ -13,7 +13,7 @@ public class PlayerChairCreateEvent extends PlayerChairEvent implements Cancella
 
     private boolean cancelled = false;
 
-    public PlayerChairCreateEvent(Player player, IChair chair) {
+    public PlayerChairCreateEvent(Player player, Chair chair) {
         super(player, chair);
     }
 

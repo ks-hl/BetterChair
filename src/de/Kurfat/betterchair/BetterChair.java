@@ -30,6 +30,7 @@ import java.util.logging.Level;
 
 public class BetterChair extends JavaPlugin implements Listener {
 
+    private static final LinkedTreeMap<ChairType, Class<? extends Chair>> BUILDERS = new LinkedTreeMap<>();
     public static BetterChair INSTANCE;
     public static WorldGuardAddon WORLDGUARDADDON;
     protected static Settings SETTINGS;
@@ -37,7 +38,6 @@ public class BetterChair extends JavaPlugin implements Listener {
     private static boolean IS_STARTED = false;
     private static File SETTINGS_FILE;
     private static File USERS_FILE;
-    private static final LinkedTreeMap<ChairType, Class<? extends IChair>> BUILDERS = new LinkedTreeMap<>();
 
     public BetterChair() {
         BUILDERS.put(ChairType.STAIR, StairChair.class);
@@ -49,9 +49,9 @@ public class BetterChair extends JavaPlugin implements Listener {
     }
 
     public static void createChair(Player player, Block block) {
-        for (Entry<ChairType, Class<? extends IChair>> builder : BUILDERS.entrySet())
+        for (Entry<ChairType, Class<? extends Chair>> builder : BUILDERS.entrySet())
             if (SETTINGS.getGlobal().get(builder.getKey())) {
-                IChair chair;
+                Chair chair;
                 try {
                     chair = builder.getValue().getConstructor(Player.class, Block.class).newInstance(player, block);
                 } catch (Exception e) {
@@ -66,7 +66,7 @@ public class BetterChair extends JavaPlugin implements Listener {
                 return;
             }
         if (player.hasPermission("betterchair.sitanywhere") && block.getBoundingBox().getVolume() < 1) {
-            IChair chair = new AnyChair(player, block);
+            Chair chair = new AnyChair(player, block);
             chair.spawn();
             Bukkit.getPluginManager().callEvent(new PlayerChairSwitchEvent(player, chair, true));
         }
@@ -132,7 +132,7 @@ public class BetterChair extends JavaPlugin implements Listener {
             }.getType());
             info("Users was loaded.");
         } catch (FileNotFoundException e) {
-            USERS = new HashMap<UUID, Boolean>();
+            USERS = new HashMap<>();
             warn("Users not found. A new one is created.");
         } catch (Exception e) {
             error("Users could not be loaded. Please check your settings. If you need help you can reach me via Spigot @Kurfat.");
@@ -206,11 +206,11 @@ public class BetterChair extends JavaPlugin implements Listener {
         createChair(player, block);
     }
 
-    public enum ChairType {
-        STAIR, SLAB, BED, SNOW, CARPET, BLOCK
-    }
-
     public void print(String message, Throwable t) {
         getLogger().log(Level.WARNING, message + ": " + t.getMessage(), t);
+    }
+
+    public enum ChairType {
+        STAIR, SLAB, BED, SNOW, CARPET, BLOCK
     }
 }
