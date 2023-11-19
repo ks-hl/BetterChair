@@ -11,6 +11,7 @@ import org.bukkit.scheduler.BukkitTask;
 import org.spigotmc.event.entity.EntityDismountEvent;
 import org.spigotmc.event.entity.EntityMountEvent;
 
+import javax.annotation.Nonnull;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -20,7 +21,7 @@ public class EntityPassengerRotate implements Runnable, Listener {
 
     public static final EntityPassengerRotate INSTANCE = new EntityPassengerRotate();
 
-    private final Map<Entity, Location> STORAGE = new HashMap<Entity, Location>();
+    private final Map<Entity, Location> STORAGE = new HashMap<>();
     private BukkitTask task;
 
     public EntityPassengerRotate() {
@@ -87,6 +88,7 @@ public class EntityPassengerRotate implements Runnable, Listener {
         }
 
         @Override
+        @Nonnull
         public HandlerList getHandlers() {
             return HANDLERS;
         }
