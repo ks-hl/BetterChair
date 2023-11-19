@@ -1,13 +1,12 @@
 package de.kurfat.betterchair.types;
 
-import de.kurfat.betterchair.events.EntityPassengerRotateEvent;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.EventPriority;
 
 public abstract class RotatingChair extends Chair {
+    private float yaw = Float.MIN_VALUE;
+
     public RotatingChair(ChairType type, Player player, Block block, Location location) {
         super(type, player, block, location);
     }
@@ -16,8 +15,8 @@ public abstract class RotatingChair extends Chair {
         super(type, player, block);
     }
 
-    @EventHandler(priority = EventPriority.MONITOR)
-    public void onEntityPassengerRotate(EntityPassengerRotateEvent event) {
-        if (event.getEntity().equals(player)) armorStand.setRotation(event.getNewLocation().getYaw(), 0);
+    public void rotate(float yaw) {
+        if (Math.abs(this.yaw - yaw) < 1E-3) return;
+        armorStand.setRotation(this.yaw = yaw, 0);
     }
 }

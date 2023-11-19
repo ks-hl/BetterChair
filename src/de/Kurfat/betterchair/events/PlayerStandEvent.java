@@ -2,18 +2,15 @@ package de.kurfat.betterchair.events;
 
 import de.kurfat.betterchair.types.Chair;
 import org.bukkit.entity.Player;
-import org.bukkit.event.Cancellable;
 import org.bukkit.event.HandlerList;
 
 import javax.annotation.Nonnull;
 
-public class PlayerChairCreateEvent extends PlayerChairEvent implements Cancellable {
+public class PlayerStandEvent extends PlayerChairEvent {
 
     public static final HandlerList HANDLERS = new HandlerList();
 
-    private boolean cancelled = false;
-
-    public PlayerChairCreateEvent(Player player, Chair chair) {
+    public PlayerStandEvent(Player player, Chair chair) {
         super(player, chair);
     }
 
@@ -22,19 +19,8 @@ public class PlayerChairCreateEvent extends PlayerChairEvent implements Cancella
     }
 
     @Override
-    public boolean isCancelled() {
-        return cancelled;
-    }
-
-    @Override
-    public void setCancelled(boolean cancel) {
-        cancelled = cancel;
-    }
-
-    @Override
     @Nonnull
     public HandlerList getHandlers() {
         return HANDLERS;
     }
-
 }

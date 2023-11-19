@@ -2,27 +2,32 @@ package de.kurfat.betterchair.events;
 
 import de.kurfat.betterchair.types.Chair;
 import org.bukkit.entity.Player;
+import org.bukkit.event.Cancellable;
 import org.bukkit.event.HandlerList;
 
 import javax.annotation.Nonnull;
 
-public class PlayerChairSwitchEvent extends PlayerChairEvent {
+public class PlayerSitEvent extends PlayerChairEvent implements Cancellable {
 
     public static final HandlerList HANDLERS = new HandlerList();
+    private boolean cancelled = false;
 
-    private final boolean enable;
-
-    public PlayerChairSwitchEvent(Player player, Chair chair, boolean enable) {
+    public PlayerSitEvent(Player player, Chair chair) {
         super(player, chair);
-        this.enable = enable;
     }
 
     public static HandlerList getHandlerList() {
         return HANDLERS;
     }
 
-    public boolean isEnable() {
-        return enable;
+    @Override
+    public boolean isCancelled() {
+        return cancelled;
+    }
+
+    @Override
+    public void setCancelled(boolean cancel) {
+        cancelled = cancel;
     }
 
     @Override
@@ -30,5 +35,4 @@ public class PlayerChairSwitchEvent extends PlayerChairEvent {
     public HandlerList getHandlers() {
         return HANDLERS;
     }
-
 }
