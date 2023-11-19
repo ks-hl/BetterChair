@@ -1,6 +1,5 @@
 package de.kurfat.betterchair.types;
 
-import de.kurfat.betterchair.BetterChair;
 import org.bukkit.block.Block;
 import org.bukkit.block.data.type.Bed;
 import org.bukkit.block.data.type.Bed.Part;
@@ -19,7 +18,7 @@ public class BedChair extends RotatingChair {
     private final Block footBlock;
 
     public BedChair(Player player, Block block) throws Exception {
-        super(BetterChair.ChairType.BED, player, block);
+        super(ChairType.BED, player, block);
         this.location = block.getLocation().clone().add(0.5, -1.15, 0.5);
         if (!(block.getBlockData() instanceof Bed bed1)) throw new Exception("This is not bed: " + block);
         long worldTicks = Objects.requireNonNull(this.location.getWorld()).getTime();

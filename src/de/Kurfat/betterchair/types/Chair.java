@@ -36,7 +36,7 @@ public abstract class Chair implements Listener {
         t.setBasePlate(false);
         t.setCollidable(false);
     };
-    private final BetterChair.ChairType type;
+    private final ChairType type;
     protected final Player player;
     protected final Block block;
     protected Location location;
@@ -44,12 +44,12 @@ public abstract class Chair implements Listener {
     protected ArmorStand armorStand;
     private boolean removed;
 
-    public Chair(BetterChair.ChairType type, Player player, Block block, Location location) {
+    public Chair(ChairType type, Player player, Block block, Location location) {
         this(type, player, block);
         this.location = location;
     }
 
-    protected Chair(BetterChair.ChairType type, Player player, Block block) {
+    protected Chair(ChairType type, Player player, Block block) {
         this.type = type;
         this.player = player;
         this.block = block;
@@ -90,7 +90,7 @@ public abstract class Chair implements Listener {
         return savepoint;
     }
 
-    public final BetterChair.ChairType getType() {
+    public final ChairType getType() {
         return type;
     }
 

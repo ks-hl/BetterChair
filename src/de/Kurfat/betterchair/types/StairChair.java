@@ -1,6 +1,5 @@
 package de.kurfat.betterchair.types;
 
-import de.kurfat.betterchair.BetterChair;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
@@ -12,7 +11,7 @@ import org.bukkit.entity.Player;
 public class StairChair extends Chair {
 
     public StairChair(Player player, Block block) throws Exception {
-        super(BetterChair.ChairType.STAIR, player, block);
+        super(ChairType.STAIR, player, block);
         this.savepoint = player.getLocation().clone();
         if (!(block.getBlockData() instanceof Stairs stairs))
             throw new Exception("This is not stairs: " + block);

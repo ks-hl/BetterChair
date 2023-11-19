@@ -8,7 +8,6 @@ import de.kurfat.betterchair.events.PlayerChairCreateEvent;
 import de.kurfat.betterchair.events.PlayerChairSwitchEvent;
 import de.kurfat.betterchair.types.*;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Player;
@@ -73,20 +72,20 @@ public class BetterChair extends JavaPlugin implements Listener {
         }
     }
 
-    private static void message(ChatColor color, String message) {
-        Bukkit.getConsoleSender().sendMessage(ChatColor.DARK_GRAY + "[" + ChatColor.RED + "BetterChair" + ChatColor.DARK_GRAY + "]" + color + " " + message + ChatColor.RESET);
-    }
-
     private static void info(String message) {
-        message(ChatColor.GREEN, message);
+        INSTANCE.getLogger().info(message);
     }
 
     private static void warn(String message) {
-        message(ChatColor.YELLOW, message);
+        INSTANCE.getLogger().warning(message);
     }
 
     private static void error(String message) {
-        message(ChatColor.RED, message);
+        INSTANCE.getLogger().severe(message);
+    }
+
+    public static void print(String message, Throwable t) {
+        INSTANCE.getLogger().log(Level.WARNING, message + ": " + t.getMessage(), t);
     }
 
     @Override
@@ -108,7 +107,7 @@ public class BetterChair extends JavaPlugin implements Listener {
         try {
             SETTINGS_FILE = new File(path + "/settings.json");
             SETTINGS = gson.fromJson(new FileReader(SETTINGS_FILE), Settings.class);
-            if (SETTINGS.global == null || SETTINGS.global.isEmpty() || SETTINGS.message == null) {
+            if (SETTINGS.global == null || SETTINGS.global.isEmpty()) {
                 error("Settings could not be loaded. Please check your settings. If you need help you can reach me via Spigot @Kurfat.");
                 return;
             }
@@ -207,11 +206,4 @@ public class BetterChair extends JavaPlugin implements Listener {
         createChair(player, block);
     }
 
-    public void print(String message, Throwable t) {
-        getLogger().log(Level.WARNING, message + ": " + t.getMessage(), t);
-    }
-
-    public enum ChairType {
-        STAIR, SLAB, BED, SNOW, CARPET, BLOCK
-    }
 }

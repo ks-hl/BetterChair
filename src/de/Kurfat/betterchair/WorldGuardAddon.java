@@ -11,6 +11,7 @@ import com.sk89q.worldguard.protection.flags.StateFlag.State;
 import com.sk89q.worldguard.protection.flags.registry.FlagRegistry;
 import com.sk89q.worldguard.protection.managers.RegionManager;
 import de.kurfat.betterchair.types.Chair;
+import de.kurfat.betterchair.types.ChairType;
 import org.bukkit.entity.Player;
 
 import java.util.HashMap;
@@ -19,13 +20,13 @@ public class WorldGuardAddon {
 
     private final WorldGuard worldGuard;
     private final WorldGuardPlugin plugin;
-    private final HashMap<BetterChair.ChairType, StateFlag> flags = new HashMap<>();
+    private final HashMap<ChairType, StateFlag> flags = new HashMap<>();
 
     public WorldGuardAddon() {
         worldGuard = WorldGuard.getInstance();
         plugin = WorldGuardPlugin.inst();
         FlagRegistry register = WorldGuard.getInstance().getFlagRegistry();
-        for (BetterChair.ChairType type : BetterChair.ChairType.values()) {
+        for (ChairType type : ChairType.values()) {
             StateFlag flag = new StateFlag("chair-" + type.name().toLowerCase(), true, RegionGroup.ALL);
             flags.put(type, flag);
             register.register(flag);
