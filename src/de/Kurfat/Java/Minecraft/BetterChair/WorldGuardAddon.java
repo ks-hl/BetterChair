@@ -20,7 +20,7 @@ public class WorldGuardAddon {
 
     private final WorldGuard worldGuard;
     private final WorldGuardPlugin plugin;
-    private final HashMap<ChairType, StateFlag> flags = new HashMap<BetterChair.ChairType, StateFlag>();
+    private final HashMap<ChairType, StateFlag> flags = new HashMap<>();
 
     public WorldGuardAddon() {
         worldGuard = WorldGuard.getInstance();

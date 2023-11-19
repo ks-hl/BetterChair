@@ -4,7 +4,7 @@ import de.Kurfat.Java.Minecraft.BetterChair.BetterChair.ChairType;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 
-public class CarpetChair extends Chair {
+public class CarpetChair extends RotatingChair {
 
     public CarpetChair(Player player, Block block) throws Exception {
         super(player, block, block.getLocation().clone().add(0.5, -1.6, 0.5));

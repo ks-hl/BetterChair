@@ -40,7 +40,7 @@ public class BetterChair extends JavaPlugin implements Listener {
     private static final LinkedTreeMap<ChairType, Class<? extends IChair>> BUILDERS = new LinkedTreeMap<>();
     public BetterChair() {
         BUILDERS.put(ChairType.STAIR, StairChair.class);
-        BUILDERS.put(ChairType.SLAP, SlapChair.class);
+        BUILDERS.put(ChairType.SLAB, SlabChair.class);
         BUILDERS.put(ChairType.BED, BedChair.class);
         BUILDERS.put(ChairType.SNOW, SnowChair.class);
         BUILDERS.put(ChairType.CARPET, CarpetChair.class);
@@ -245,6 +245,6 @@ public class BetterChair extends JavaPlugin implements Listener {
     }
 
     public enum ChairType {
-        STAIR, SLAP, BED, SNOW, CARPET, BLOCK
+        STAIR, SLAB, BED, SNOW, CARPET, BLOCK
 	}
 }

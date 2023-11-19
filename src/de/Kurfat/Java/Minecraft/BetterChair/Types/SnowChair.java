@@ -7,20 +7,14 @@ import org.bukkit.block.data.type.Snow;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 
-public class SnowChair extends Chair {
+public class SnowChair extends RotatingChair {
 
     public SnowChair(Player player, Block block) throws Exception {
         super(player, block);
-        if (!(block.getBlockData() instanceof Snow)) throw new Exception("This is not snow: " + block);
-        Snow snow = (Snow) block.getBlockData();
+        if (!(block.getBlockData() instanceof Snow snow)) throw new Exception("This is not snow: " + block);
         double one = 0.125;
         location = block.getLocation().clone().add(0.5, -1.7, 0.5);
         location.setY(location.getY() + one * snow.getLayers());
-    }
-
-    @EventHandler
-    public void onEntityPassengerRotate(EntityPassengerRotateEvent event) {
-        if (event.getEntity().equals(player)) armorStand.setRotation(event.getNewLocation().getYaw(), 0);
     }
 
     @Override

@@ -4,6 +4,8 @@ import de.Kurfat.Java.Minecraft.BetterChair.Types.IChair;
 import org.bukkit.entity.Player;
 import org.bukkit.event.HandlerList;
 
+import javax.annotation.Nonnull;
+
 public class PlayerChairSwitchEvent extends PlayerChairEvent {
 
     public static HandlerList HANDLERS = new HandlerList();
@@ -24,6 +26,7 @@ public class PlayerChairSwitchEvent extends PlayerChairEvent {
     }
 
     @Override
+    @Nonnull
     public HandlerList getHandlers() {
         return HANDLERS;
     }

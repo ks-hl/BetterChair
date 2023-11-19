@@ -11,7 +11,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.regex.Pattern;
 
-public class BlockChair extends Chair {
+public class BlockChair extends RotatingChair {
 
     public static final List<String> BLOCKLIST = Arrays.asList(
             "\\w*_PRESSURE_PLATE",
@@ -32,11 +32,6 @@ public class BlockChair extends Chair {
         for (String regex : BLOCKLIST)
             if (Pattern.matches("^(" + regex + ")$", block.getType().name()))
                 throw new Exception("This type is not allowed: " + block);
-    }
-
-    @EventHandler
-    public void onEntityPassengerRotate(EntityPassengerRotateEvent event) {
-        if (event.getEntity().equals(player)) armorStand.setRotation(event.getNewLocation().getYaw(), 0);
     }
 
     @Override

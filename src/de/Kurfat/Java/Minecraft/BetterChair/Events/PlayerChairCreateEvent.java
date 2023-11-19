@@ -5,6 +5,8 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.Cancellable;
 import org.bukkit.event.HandlerList;
 
+import javax.annotation.Nonnull;
+
 public class PlayerChairCreateEvent extends PlayerChairEvent implements Cancellable {
 
     public static HandlerList HANDLERS = new HandlerList();
@@ -30,6 +32,7 @@ public class PlayerChairCreateEvent extends PlayerChairEvent implements Cancella
     }
 
     @Override
+    @Nonnull
     public HandlerList getHandlers() {
         return HANDLERS;
     }
