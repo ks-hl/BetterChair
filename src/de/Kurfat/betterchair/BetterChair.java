@@ -39,6 +39,7 @@ public class BetterChair extends JavaPlugin implements Listener {
     private static File SETTINGS_FILE;
     private static File USERS_FILE;
 
+    @SuppressWarnings("unused")
     public BetterChair() {
         BUILDERS.put(ChairType.STAIR, StairChair.class);
         BUILDERS.put(ChairType.SLAB, SlabChair.class);

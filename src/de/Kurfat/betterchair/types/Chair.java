@@ -37,8 +37,8 @@ public abstract class Chair implements Listener {
         t.setCollidable(false);
     };
     private final BetterChair.ChairType type;
-    protected Player player;
-    protected Block block;
+    protected final Player player;
+    protected final Block block;
     protected Location location;
     protected Location savepoint;
     protected ArmorStand armorStand;
@@ -86,10 +86,6 @@ public abstract class Chair implements Listener {
         return block;
     }
 
-    public Location getLocation() {
-        return location;
-    }
-
     public Location getSavePoint() {
         return savepoint;
     }
@@ -99,22 +95,26 @@ public abstract class Chair implements Listener {
     }
 
     // REMOVE PASSENGERS FROM ARMOR_STAND
+    @SuppressWarnings("unused")
     @EventHandler(priority = EventPriority.MONITOR)
     public void onPlayerQuit(PlayerQuitEvent event) {
         Player player = getPlayer();
         if (event.getPlayer().equals(player)) remove();
     }
 
+    @SuppressWarnings("unused")
     @EventHandler(priority = EventPriority.MONITOR)
     public void onBlockBreak(BlockBreakEvent event) {
         if (!event.isCancelled() && event.getBlock().equals(getBlock())) remove();
     }
 
+    @SuppressWarnings("unused")
     @EventHandler(priority = EventPriority.MONITOR)
     public void onBlockPhysics(BlockPhysicsEvent event) {
         if (!event.isCancelled() && event.getBlock().equals(getBlock())) remove();
     }
 
+    @SuppressWarnings("unused")
     @EventHandler(priority = EventPriority.MONITOR)
     public void onEntityDamage(EntityDamageEvent event) {
         if (event.isCancelled() || !event.getEntity().equals(getPlayer())) return;
@@ -127,6 +127,7 @@ public abstract class Chair implements Listener {
     }
 
     // CALL CHAIR EVENT
+    @SuppressWarnings("unused")
     @EventHandler(priority = EventPriority.MONITOR)
     public void onEntityDismount(EntityDismountEvent event) {
         Player player = getPlayer();
@@ -137,6 +138,7 @@ public abstract class Chair implements Listener {
     }
 
     // CHANGE LOCATION TO SAVEPOINT AND REMOVE ARMOR_STAND
+    @SuppressWarnings("unused")
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onPlayerTeleport(PlayerTeleportEvent event) {
         Player player = getPlayer();

@@ -22,7 +22,7 @@ public class StairChair extends Chair {
         double x = block.getX() + 0.5;
         double y = block.getY() - 1.15;
         double z = block.getZ() + 0.5;
-        float yaw = 0F;
+        float yaw;
         float pitch = 0F;
         float face = 0.2F;
         if (stairs.getFacing() == BlockFace.WEST) {

@@ -1,17 +1,17 @@
 package de.kurfat.betterchair;
 
+import de.kurfat.betterchair.events.EntityPassengerRotateEvent;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.EntityType;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
-import org.bukkit.event.entity.EntityEvent;
 import org.bukkit.scheduler.BukkitTask;
 import org.spigotmc.event.entity.EntityDismountEvent;
 import org.spigotmc.event.entity.EntityMountEvent;
 
-import javax.annotation.Nonnull;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -52,45 +52,18 @@ public class EntityPassengerRotate implements Runnable, Listener {
             }
     }
 
+    @SuppressWarnings("unused")
     @EventHandler
     public void onEntityMount(EntityMountEvent event) {
+        if (event.getEntityType() != EntityType.ARMOR_STAND) return;
         STORAGE.put(event.getEntity(), event.getEntity().getLocation());
     }
 
+    @SuppressWarnings("unused")
     @EventHandler
     public void onEntityMount(EntityDismountEvent event) {
+        if (event.getEntityType() != EntityType.ARMOR_STAND) return;
         STORAGE.remove(event.getEntity());
     }
 
-    public static class EntityPassengerRotateEvent extends EntityEvent {
-
-        private static final HandlerList HANDLERS = new HandlerList();
-
-        private final Location oldLocation;
-        private final Location newLocation;
-
-        public EntityPassengerRotateEvent(Entity entity, Location oldLocation, Location newLocation) {
-            super(entity);
-            this.oldLocation = oldLocation;
-            this.newLocation = newLocation;
-        }
-
-        public static HandlerList getHandlerList() {
-            return HANDLERS;
-        }
-
-        public Location getOldLocation() {
-            return oldLocation;
-        }
-
-        public Location getNewLocation() {
-            return newLocation;
-        }
-
-        @Override
-        @Nonnull
-        public HandlerList getHandlers() {
-            return HANDLERS;
-        }
-    }
 }

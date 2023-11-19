@@ -22,8 +22,8 @@ public class BedChair extends RotatingChair {
         super(BetterChair.ChairType.BED, player, block);
         this.location = block.getLocation().clone().add(0.5, -1.15, 0.5);
         if (!(block.getBlockData() instanceof Bed bed1)) throw new Exception("This is not bed: " + block);
-        long worldticks = Objects.requireNonNull(this.location.getWorld()).getTime();
-        if (worldticks >= MIN_TIME_TICK && worldticks <= MAX_TIME_TICK)
+        long worldTicks = Objects.requireNonNull(this.location.getWorld()).getTime();
+        if (worldTicks >= MIN_TIME_TICK && worldTicks <= MAX_TIME_TICK)
             throw new Exception("This world is in sleeping time: " + block);
         Block block2 = block.getRelative(bed1.getPart() == Part.FOOT ? bed1.getFacing() : bed1.getFacing().getOppositeFace());
         if (bed1.getPart() == Part.HEAD) {

@@ -9,7 +9,7 @@ import javax.annotation.Nonnull;
 
 public class PlayerChairCreateEvent extends PlayerChairEvent implements Cancellable {
 
-    public static HandlerList HANDLERS = new HandlerList();
+    public static final HandlerList HANDLERS = new HandlerList();
 
     private boolean cancelled = false;
 

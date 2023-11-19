@@ -1,8 +1,10 @@
 name: BetterChair
-version: 1.11.0
-author: Kurfat
-main: de.Kurfat.Java.Minecraft.BetterChair.BetterChair
+version: 1.11.1
+author: "Kurfat & kshl"
+main: de.kurfat.betterchair.BetterChair
 api-version: 1.17
 softdepend: [WorldGuard]
 commands:
   chair:
+    usage: /chair
+    description: Toggle whether you sit or not when clicking a block

@@ -8,7 +8,7 @@ import javax.annotation.Nonnull;
 
 public class PlayerChairSwitchEvent extends PlayerChairEvent {
 
-    public static HandlerList HANDLERS = new HandlerList();
+    public static final HandlerList HANDLERS = new HandlerList();
 
     private final boolean enable;
 
