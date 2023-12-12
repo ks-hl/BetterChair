@@ -215,7 +215,7 @@ public class BetterChair extends JavaPlugin implements Listener, CommandExecutor
     @Override
     public void onDisable() {
         if (!isStarted) return;
-        uuidChairMap.values().forEach(Chair::remove);
+        new ArrayList<>(uuidChairMap.values()).forEach(Chair::remove);
         try {
             save();
         } catch (IOException ex) {

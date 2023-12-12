@@ -1,6 +1,8 @@
 package de.kurfat.betterchair.types;
 
 import de.kurfat.betterchair.BetterChair;
+import de.kurfat.betterchair.events.PlayerStandEvent;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.entity.ArmorStand;
@@ -52,6 +54,7 @@ public abstract class Chair {
         }
         this.armorStand.remove();
         BetterChair.getInstance().remove(this);
+        Bukkit.getServer().getPluginManager().callEvent(new PlayerStandEvent(player, this));
     }
 
     public Player getPlayer() {
@@ -60,10 +63,6 @@ public abstract class Chair {
 
     public Block getBlock() {
         return block;
-    }
-
-    public Location getSavePoint() {
-        return savepoint;
     }
 
     public final ChairType getType() {
