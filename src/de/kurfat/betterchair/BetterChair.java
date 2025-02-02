@@ -90,7 +90,10 @@ public class BetterChair extends JavaPlugin implements Listener, CommandExecutor
             Bukkit.getPluginManager().callEvent(customEvent);
             if (customEvent.isCancelled()) return;
             if (getWorldGuard() != null && !getWorldGuard().check(player, chair)) return;
-            chair.spawn();
+            if (!chair.spawn()) {
+                chair.remove();
+                return;
+            }
             Chair oldChair = uuidChairMap.put(player.getUniqueId(), chair);
             if (oldChair != null) oldChair.remove();
             blockChairMap.put(block, chair);
@@ -101,7 +104,10 @@ public class BetterChair extends JavaPlugin implements Listener, CommandExecutor
             PlayerSitEvent customEvent = new PlayerSitEvent(player, chair);
             Bukkit.getPluginManager().callEvent(customEvent);
             if (customEvent.isCancelled()) return;
-            chair.spawn();
+            if (!chair.spawn()) {
+                chair.remove();
+                return;
+            }
             Chair oldChair = uuidChairMap.put(player.getUniqueId(), chair);
             if (oldChair != null) oldChair.remove();
             blockChairMap.put(block, chair);

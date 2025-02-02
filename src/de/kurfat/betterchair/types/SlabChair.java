@@ -7,10 +7,12 @@ import org.bukkit.entity.Player;
 
 public class SlabChair extends RotatingChair {
 
-    public SlabChair(Player player, Block block) throws Exception {
-        super(ChairType.SLAB, player, block);
-        if (!(block.getBlockData() instanceof Slab slab)) throw new Exception("This is not slab: " + block);
-        if (slab.getType() == Type.BOTTOM) location = block.getLocation().clone().add(0.5, -1.20, 0.5);
-        else location = block.getLocation().clone().add(0.5, -0.7, 0.5);
+    public SlabChair(Player player, Block block) {
+        super(ChairType.SLAB, player, block, block.getLocation().clone().add(OFFSETS.apply(getOffset(block))));
+    }
+
+    private static double getOffset(Block block) {
+        if (!(block.getBlockData() instanceof Slab slab)) throw new IllegalArgumentException("This is not slab: " + block);
+        return slab.getType() == Type.BOTTOM ? -0.5 : 0;
     }
 }

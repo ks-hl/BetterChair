@@ -7,10 +7,11 @@ import org.bukkit.entity.Player;
 public class SnowChair extends RotatingChair {
 
     public SnowChair(Player player, Block block) throws Exception {
-        super(ChairType.SNOW, player, block);
-        if (!(block.getBlockData() instanceof Snow snow)) throw new Exception("This is not snow: " + block);
-        double one = 0.125;
-        location = block.getLocation().clone().add(0.5, -1.7, 0.5);
-        location.setY(location.getY() + one * snow.getLayers());
+        super(ChairType.SNOW, player, block, block.getLocation().clone().add(Chair.OFFSETS.apply(getOffset(block))));
+    }
+
+    private static double getOffset(Block block) {
+        if (!(block.getBlockData() instanceof Snow snow)) throw new IllegalArgumentException("This is not snow: " + block);
+        return 0.125 * snow.getLayers() - 1;
     }
 }

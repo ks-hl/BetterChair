@@ -21,7 +21,7 @@ public class BlockChair extends RotatingChair {
     );
 
     public BlockChair(Player player, Block block) throws Exception {
-        super(ChairType.BLOCK, player, block, block.getLocation().clone().add(0.5, -0.7, 0.5));
+        super(ChairType.BLOCK, player, block, block.getLocation().clone().add(Chair.OFFSETS.apply(0D)));
         Material bottom = block.getType();
         Material upper = block.getLocation().add(0, 1, 0).getBlock().getType();
         if (!bottom.isSolid() || bottom.isInteractable() || !upper.isAir())

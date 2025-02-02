@@ -5,6 +5,6 @@ import org.bukkit.entity.Player;
 
 public class AnyChair extends RotatingChair {
     public AnyChair(Player player, Block block) {
-        super(ChairType.BLOCK, player, block, block.getLocation().clone().add(0.5, -0.7, 0.5));
+        super(ChairType.BLOCK, player, block, block.getLocation().clone().add(Chair.OFFSETS.apply(0D)));
     }
 }

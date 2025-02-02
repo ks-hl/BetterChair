@@ -12,8 +12,7 @@ public class BedChair extends RotatingChair {
     public static final long MAX_TIME_TICK = 23459;
 
     public BedChair(Player player, Block block) throws Exception {
-        super(ChairType.BED, player, block);
-        this.location = block.getLocation().clone().add(0.5, -1.15, 0.5);
+        super(ChairType.BED, player, block, block.getLocation().clone().add(Chair.OFFSETS.apply(-0.45D)));
         if (!(block.getBlockData() instanceof Bed)) throw new Exception("This is not bed: " + block);
         long worldTicks = Objects.requireNonNull(this.location.getWorld()).getTime();
         if (worldTicks >= MIN_TIME_TICK && worldTicks <= MAX_TIME_TICK)

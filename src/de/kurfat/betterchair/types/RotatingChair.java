@@ -11,10 +11,6 @@ public abstract class RotatingChair extends Chair {
         super(type, player, block, location);
     }
 
-    public RotatingChair(ChairType type, Player player, Block block) {
-        super(type, player, block);
-    }
-
     public void rotate(float yaw) {
         if (Math.abs(this.yaw - yaw) < 1E-3) return;
         armorStand.setRotation(this.yaw = yaw, 0);
