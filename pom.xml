@@ -81,6 +81,8 @@
 		</dependency>
 	</dependencies>
 	<properties>
+		<testserver>${env.USERPROFILE}/Documents/TestServer/</testserver>
+		<jars>${env.USERPROFILE}/eclipse-workspace/jars</jars>
 		<project.build.sourceEncoding>UTF8</project.build.sourceEncoding>
 	</properties>
 </project>
