@@ -1,8 +1,10 @@
 package de.kurfat.betterchair;
 
-import com.google.gson.internal.LinkedTreeMap;
 import de.kurfat.betterchair.events.PlayerSitEvent;
-import de.kurfat.betterchair.types.*;
+import de.kurfat.betterchair.types.AnyChair;
+import de.kurfat.betterchair.types.Chair;
+import de.kurfat.betterchair.types.ChairType;
+import de.kurfat.betterchair.types.RotatingChair;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
@@ -26,13 +28,21 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.*;
-import java.util.Map.Entry;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Scanner;
+import java.util.Set;
+import java.util.UUID;
 import java.util.logging.Level;
 import java.util.stream.Collectors;
 
 public class BetterChair extends JavaPlugin implements Listener, CommandExecutor {
-    private static final LinkedTreeMap<ChairType, Class<? extends Chair>> builders = new LinkedTreeMap<>();
     private final Map<UUID, LinkedList<Location>> locationHistoryMap = new HashMap<>();
     private static BetterChair instance;
     private boolean isStarted = false;
@@ -41,16 +51,6 @@ public class BetterChair extends JavaPlugin implements Listener, CommandExecutor
     private final Map<UUID, Chair> uuidChairMap = new HashMap<>();
     private final Map<Block, Chair> blockChairMap = new HashMap<>();
     private Set<UUID> disabledUsers;
-
-    @SuppressWarnings("unused")
-    public BetterChair() {
-        builders.put(ChairType.STAIR, StairChair.class);
-        builders.put(ChairType.SLAB, SlabChair.class);
-        builders.put(ChairType.BED, BedChair.class);
-        builders.put(ChairType.SNOW, SnowChair.class);
-        builders.put(ChairType.CARPET, CarpetChair.class);
-        builders.put(ChairType.BLOCK, BlockChair.class);
-    }
 
     public static BetterChair getInstance() {
         return instance;
@@ -79,11 +79,11 @@ public class BetterChair extends JavaPlugin implements Listener, CommandExecutor
     public void createChair(Player player, Block block) {
         Chair currentChair = getBlockChairMap().get(block);
         if (currentChair != null && !currentChair.isRemoved()) return;
-        for (Entry<ChairType, Class<? extends Chair>> builder : builders.entrySet()) {
+        for (ChairType chairType : ChairType.values()) {
             Chair chair;
             try {
-                chair = builder.getValue().getConstructor(Player.class, Block.class).newInstance(player, block);
-            } catch (Exception e) {
+                chair = chairType.getChairConstructor().create(player, block);
+            } catch (IllegalArgumentException e) {
                 continue;
             }
             PlayerSitEvent customEvent = new PlayerSitEvent(player, chair);
@@ -240,8 +240,11 @@ public class BetterChair extends JavaPlugin implements Listener, CommandExecutor
         RayTraceResult rayTraceResult = player.rayTraceBlocks(3);
         if (rayTraceResult == null) return;
         Block hitBlock = rayTraceResult.getHitBlock();
-        if (!block.equals(hitBlock)) return;
-        if (block.getLocation().add(0.5, 0.5, 0.5).distance(player.getLocation()) > 2 || getBlockChairMap().containsKey(block) || getUUIDChairMap().containsKey(player.getUniqueId()) || !block.getRelative(BlockFace.UP).isPassable())
+        if (!block.equals(hitBlock)) return; // Ensures you can't click blocks on the other side of walls
+        if (block.getLocation().add(0.5, 0.5, 0.5).distance(player.getLocation()) > 2
+                || getBlockChairMap().containsKey(block)
+                || getUUIDChairMap().containsKey(player.getUniqueId())
+                || !block.getRelative(BlockFace.UP).isPassable())
             return;
         if (getAverageSpeed(player.getUniqueId()) > 1) {
             player.sendMessage("§c§oIt's hard to sit when you're moving so fast!");

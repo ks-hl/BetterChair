@@ -6,7 +6,7 @@ import org.bukkit.entity.Player;
 
 public class SnowChair extends RotatingChair {
 
-    public SnowChair(Player player, Block block) throws Exception {
+    public SnowChair(Player player, Block block) {
         super(ChairType.SNOW, player, block, block.getLocation().clone().add(Chair.OFFSETS.apply(getOffset(block))));
     }
 

@@ -19,6 +19,7 @@ import org.bukkit.event.player.PlayerTeleportEvent;
 import org.bukkit.event.world.ChunkLoadEvent;
 import org.bukkit.event.world.ChunkUnloadEvent;
 
+import java.util.Arrays;
 import java.util.UUID;
 
 public class ChairListener implements Listener {
@@ -71,14 +72,16 @@ public class ChairListener implements Listener {
 
     @EventHandler
     public void on(ChunkLoadEvent e) {
-        for (Entity entity : e.getChunk().getEntities()) {
-            if (Chair.isChair(entity)) entity.remove();
-        }
+        checkForChairs(Arrays.asList(e.getChunk().getEntities()));
     }
 
     @EventHandler
     public void on(ChunkUnloadEvent e) {
-        for (Entity entity : e.getChunk().getEntities()) {
+        checkForChairs(Arrays.asList(e.getChunk().getEntities()));
+    }
+
+    private void checkForChairs(Iterable<Entity> entities) {
+        for (Entity entity : entities) {
             if (Chair.isChair(entity)) entity.remove();
         }
     }
@@ -91,12 +94,8 @@ public class ChairListener implements Listener {
 
     @EventHandler(priority = EventPriority.HIGHEST)
     public void on(EntityMountEvent e) {
-        System.out.println("Mount");
-        if (e.getMount().getType() != EntityType.ARMOR_STAND) return;
-//        if (!Chair.isChair(e.getMount())) return;
-        System.out.println("chair");
+        if (!Chair.isChair(e.getMount())) return;
         if (e.getEntityType() != EntityType.PLAYER) return;
-        System.out.println("player");
         e.setCancelled(false);
     }
 

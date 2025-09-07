@@ -20,14 +20,14 @@ public class BlockChair extends RotatingChair {
             "\\w*_*GLASS_PANE"
     );
 
-    public BlockChair(Player player, Block block) throws Exception {
+    public BlockChair(Player player, Block block) {
         super(ChairType.BLOCK, player, block, block.getLocation().clone().add(Chair.OFFSETS.apply(0D)));
         Material bottom = block.getType();
         Material upper = block.getLocation().add(0, 1, 0).getBlock().getType();
         if (!bottom.isSolid() || bottom.isInteractable() || !upper.isAir())
-            throw new Exception("This type is not allowed: " + block);
+            throw new IllegalArgumentException("This type is not allowed: " + block);
         for (String regex : BLOCKLIST)
             if (Pattern.matches("^(" + regex + ")$", block.getType().name()))
-                throw new Exception("This type is not allowed: " + block);
+                throw new IllegalArgumentException("This type is not allowed: " + block);
     }
 }

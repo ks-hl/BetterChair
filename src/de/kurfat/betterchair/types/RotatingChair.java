@@ -2,6 +2,7 @@ package de.kurfat.betterchair.types;
 
 import org.bukkit.Location;
 import org.bukkit.block.Block;
+import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Player;
 
 public abstract class RotatingChair extends Chair {
