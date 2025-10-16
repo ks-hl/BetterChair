@@ -100,7 +100,12 @@ public class BetterChair extends JavaPlugin implements Listener, CommandExecutor
             return;
         }
         if (player.hasPermission("betterchair.sitanywhere") && block.getBoundingBox().getVolume() < 1) {
-            Chair chair = new AnyChair(player, block);
+            Chair chair;
+            try {
+                chair = new AnyChair(player, block);
+            } catch (IllegalArgumentException e) {
+                return;
+            }
             PlayerSitEvent customEvent = new PlayerSitEvent(player, chair);
             Bukkit.getPluginManager().callEvent(customEvent);
             if (customEvent.isCancelled()) return;
